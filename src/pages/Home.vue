@@ -39,7 +39,7 @@
         <input class="input" placeholder="搜索作品、作者、类型..."/>
         <i class="el-icon-search"></i>
       </div>
-      <div class="upload">上传</div>
+      <div class="upload" v-on:click="upload">上传</div>
     </div>
     <div class="recommend">
       <div class="rec-title"> —— 热门推荐 —— </div>
@@ -176,6 +176,9 @@ export default {
   methods: {
     showWorkDetail: function (index) {
       console.log(index)
+    },
+    upload: function () {
+      this.$router.push({path: '/upload'})
     }
   }
 }
