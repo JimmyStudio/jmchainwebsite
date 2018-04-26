@@ -8,8 +8,8 @@
       <div class="head">
         <div class="logo big">J&M Chain</div>
         <div class="logo small">Beta</div>
-        <div class="btn register">注册</div>
-        <div class="btn login">登录</div>
+        <div class="btn register" @click="registerVisible=true">注册</div>
+        <div class="btn login" @click="loginVisible=true">登录</div>
       </div>
       <div class="car">
         <el-carousel trigger="click" height="450px" :interval=car_interval>
@@ -44,7 +44,7 @@
     <div class="recommend">
       <div class="rec-title"> —— 热门推荐 —— </div>
       <div class="rec-content">
-        <work class="rec-work" v-for="(item , index) in works" :key="index" :index="index" :work="item" v-on:showDetail="showWorkDetail"></work>
+        <work class="rec-work" v-for="(item,index) in works" :key="index" :index="index" :work="item" v-on:showDetail="showWorkDetail"></work>
       </div>
       <div class="explore">
         <div class="more">发现更多</div>
@@ -104,11 +104,66 @@
     <div class="copyright">
       © 2018 劲米科技
     </div>
+    <el-dialog
+      title="注册"
+      :visible.sync="registerVisible"
+      width="30%"
+      :center="dialogCenter">
+      <el-form :model="registerForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model.number="registerForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="验证码" prop="pass">
+          <el-input type="password" v-model="registerForm.pass" auto-complete="off">
+            <el-button slot="append" type="primary">发送验证码</el-button>
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false">注 册</el-button>
+          </span>
+    </el-dialog>
+
+    <el-dialog
+      title="登录"
+      :visible.sync="loginVisible"
+      width="30%"
+      :center="dialogCenter">
+      <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model.number="loginForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="验证码" prop="pass">
+          <el-input type="password" v-model="loginForm.pass" auto-complete="off">
+            <el-button slot="append" type="primary">发送验证码</el-button>
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false">登 录</el-button>
+          </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import work from '../components/Work.vue'
+var checkPhone = (rule, value, callback) => {
+  if (!value) {
+    return callback(new Error('手机号不能为空'))
+  }
+  setTimeout(() => {
+    if (!Number.isInteger(value)) {
+      callback(new Error('请输入正确的手机号'))
+    }
+  }, 1000)
+}
+var validatePass = (rule, value, callback) => {
+  if (value === '') {
+    return callback(new Error('请输入验证码'))
+  }
+}
 
 export default {
   components: {
@@ -117,7 +172,26 @@ export default {
   name: 'home',
   data () {
     return {
-      car_interval: 3000, // carousel change interval
+      loginForm: {
+        phone: '',
+        pass: ''
+      },
+      registerForm: {
+        phone: '',
+        pass: ''
+      },
+      rules: {
+        phone: [
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        pass: [
+          { validator: validatePass, trigger: 'blur' }
+        ]
+      },
+      registerVisible: false,
+      loginVisible: false,
+      dialogCenter: true,
+      car_interval: 3000,
       works: [
         {
           name: 'Japan(Prod.@JGramm)',
