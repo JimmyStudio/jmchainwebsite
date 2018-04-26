@@ -420,7 +420,7 @@ export default {
   }
   .left-item{
     height: 40px;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 40px;
   }
   .left-item:hover{
