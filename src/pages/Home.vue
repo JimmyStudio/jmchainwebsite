@@ -118,6 +118,12 @@
             <el-button slot="append" type="primary">发送验证码</el-button>
           </el-input>
         </el-form-item>
+        <el-form-item label="密码" prop="pw">
+          <el-input v-model.number="registerForm.pw"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="pwa">
+          <el-input v-model.number="registerForm.pwa"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false">注 册</el-button>
@@ -133,10 +139,8 @@
         <el-form-item label="手机号" prop="phone">
           <el-input v-model.number="loginForm.phone"></el-input>
         </el-form-item>
-        <el-form-item label="验证码" prop="pass">
-          <el-input type="password" v-model="loginForm.pass" auto-complete="off">
-            <el-button slot="append" type="primary">发送验证码</el-button>
-          </el-input>
+        <el-form-item label="密码" prop="passv">
+          <el-input type="password" v-model="loginForm.passv" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -165,6 +169,32 @@ var validatePass = (rule, value, callback) => {
   }
 }
 
+var validatePass3 = (rule, value, callback) => {
+  if (value === '') {
+    return callback(new Error('请输入密码'))
+  }
+}
+
+var validatePass1 = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请输入密码'))
+  } else {
+    if (this.rules.pwa !== '') {
+      this.$refs.rules.validateField('pwa')
+    }
+    callback()
+  }
+}
+var validatePass2 = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请再次输入密码'))
+  } else if (value !== this.ruleForm2.pass) {
+    callback(new Error('两次输入密码不一致!'))
+  } else {
+    callback()
+  }
+}
+
 export default {
   components: {
     work
@@ -174,18 +204,29 @@ export default {
     return {
       loginForm: {
         phone: '',
-        pass: ''
+        passv: ''
       },
       registerForm: {
         phone: '',
-        pass: ''
+        pass: '',
+        pw: '',
+        pwa: ''
       },
       rules: {
+        passv: [
+          { validator: validatePass3, trigger: 'blur' }
+        ],
         phone: [
           { validator: checkPhone, trigger: 'blur' }
         ],
         pass: [
           { validator: validatePass, trigger: 'blur' }
+        ],
+        pw: [
+          { validator: validatePass1, trigger: 'blur' }
+        ],
+        pwa: [
+          { validator: validatePass2, trigger: 'blur' }
         ]
       },
       registerVisible: false,
