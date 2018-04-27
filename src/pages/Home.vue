@@ -293,7 +293,7 @@ export default {
       console.log(index)
     },
     upload: function () {
-      this.$router.push({path: '/upload'})
+      this.$router.push({path: '/management'})
     }
   }
 }

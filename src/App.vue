@@ -37,4 +37,17 @@ export default {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  .fade-enter {
+    opacity:0;
+  }
+  .fade-leave{
+    opacity:1;
+  }
+  .fade-enter-active{
+    transition:opacity .2s;
+  }
+  .fade-leave-active{
+    opacity:0;
+    transition:opacity .2s;
+  }
 </style>
