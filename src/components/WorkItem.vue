@@ -10,7 +10,7 @@
     <div class="desc item">
       <div class="name">{{ work.name }}</div>
       <div class="tags">
-        <el-tag class="tag" size="medium" :key="tag" v-for="tag in work.tags">{{tag}}</el-tag>
+        <el-tag class="tag" size="medium" :key="index" v-for="(item , index) in work.tags">{{item}}</el-tag>
       </div>
     </div>
     <div class="duration item">{{work.duration}}</div>
@@ -29,6 +29,11 @@ export default {
   props: {
     index: Number,
     work: Object
+  },
+  methods: {
+    showDetail (index) {
+      console.log(index)
+    }
   }
 }
 </script>

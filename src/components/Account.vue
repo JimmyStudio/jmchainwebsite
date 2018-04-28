@@ -3,6 +3,7 @@
  */
 <template>
   <div class="account">
+    <div class="title">我的账户</div>
     <div class="top">
       <div class="left">
         <font-awesome-icon :icon="['far','user']"></font-awesome-icon>
@@ -63,13 +64,23 @@ export default {
 </script>
 
 <style scoped>
+  .title{
+    width: 100%;
+    margin-left: 15px;
+    /*margin-top: 20px;*/
+    color: #5e5e5e;
+    font-size: 16px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 40px;
+  }
   .bottom{
     position: absolute;
     width: 523px;
     height: 200px;
     /*background-color: green;*/
     left: 20px;
-    top: 130px;
+    top: 190px;
   }
   .top{
     margin-top: 20px;
@@ -95,7 +106,7 @@ export default {
   }
   .account{
     width: 100%;
-    height: 300px;
+    height: 340px;
     position: relative;
     color: #5e5e5e;
     /*background: blanchedalmond;*/
