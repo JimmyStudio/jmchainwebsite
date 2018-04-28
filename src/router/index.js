@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/pages/Home'
 import Management from '@/pages/Management'
-import test1 from '@/components/Test1'
+import Account from '@/components/Account'
+import MyWorks from '@/components/MyWorks'
+import Upload from '@/components/Upload'
 
 Vue.use(Router)
 
@@ -20,9 +22,19 @@ export default new Router({
       component: Management,
       children: [
         {
-          path: 'test',
-          name: 'test1',
-          component: test1
+          path: 'account',
+          name: 'Account',
+          component: Account
+        },
+        {
+          path: 'works',
+          name: 'MyWorks',
+          component: MyWorks
+        },
+        {
+          path: 'upload',
+          name: 'Upload',
+          component: Upload
         }
       ]
     }

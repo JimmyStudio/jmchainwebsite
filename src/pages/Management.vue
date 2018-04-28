@@ -6,7 +6,7 @@
     <div class="header">
       <div class="logo big">J&M Chain</div>
       <div class="logo small">Beta</div>
-      <div class="left">首页</div>
+      <div class="left" @click="openHome">首页</div>
       <div class="left">音效库</div>
       <div class="op">
         <el-badge :value="200" :max="99" class="item">
@@ -48,7 +48,9 @@
         </el-menu>
       </div>
       <div class="right-content">
-        <router-view></router-view>
+        <transition name="fade" mode="out-in">
+          <router-view></router-view>
+        </transition>
       </div>
     </div>
   </div>
@@ -58,13 +60,35 @@
 export default {
   methods: {
     handleSelect (key, keyPath) {
-      console.log(key, keyPath)
+      if (key === '1') {
+        this.$router.push('/management/account')
+      } else if (key === '2') {
+        this.$router.push('/management/works')
+      } else {
+        this.$router.push('/management/upload')
+      }
+    },
+    openHome () {
+      this.$router.push('/')
     }
   }
 }
 </script>
 
 <style scoped>
+  .fade-enter {
+    opacity:0;
+  }
+  .fade-leave{
+    opacity:1;
+  }
+  .fade-enter-active{
+    transition:opacity .3s;
+  }
+  .fade-leave-active{
+    opacity:0;
+    transition:opacity .3s;
+  }
   .left-content{
     width: 120px;
     float: left;
@@ -74,7 +98,6 @@ export default {
     float: left;
     width: 1116px;
     background: white;
-    height: 900px;
   }
   .el-menu-vertical{
     border: none;
