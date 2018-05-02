@@ -5,6 +5,7 @@ import Management from '@/pages/Management'
 import Account from '@/components/Account'
 import MyWorks from '@/components/MyWorks'
 import Upload from '@/components/Upload'
+import SoundMart from '@/pages/SoundMart'
 
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ export default new Router({
           component: Upload
         }
       ]
+    },
+    {
+      path: '/sounds',
+      name: 'SoundMart',
+      component: SoundMart
     }
   ]
 })

@@ -6,10 +6,11 @@
     <div class="line"></div>
     <div class="banner">
       <div class="head">
-        <div class="logo big">J&M Chain</div>
-        <div class="logo small">Beta</div>
-        <div class="btn register" @click="registerVisible=true">注册</div>
-        <div class="btn login" @click="loginVisible=true">登录</div>
+        <mynav :iswhite="iswhite"></mynav>
+        <!--<div class="logo big">J&M Chain</div>-->
+        <!--<div class="logo small">Beta</div>-->
+        <!--<div class="btn register" @click="registerVisible=true">注册</div>-->
+        <!--<div class="btn login" @click="loginVisible=true">登录</div>-->
       </div>
       <div class="car">
         <el-carousel trigger="click" height="450px" :interval=car_interval>
@@ -47,7 +48,7 @@
         <work class="rec-work" v-for="(item,index) in works" :key="index" :index="index" :work="item" v-on:showDetail="showWorkDetail"></work>
       </div>
       <div class="explore">
-        <div class="more">发现更多</div>
+        <div class="more" @click="openSounds">发现更多</div>
       </div>
     </div>
     <div class="bot-line"></div>
@@ -153,6 +154,7 @@
 
 <script>
 import work from '../components/Work.vue'
+import mynav from '../components/Nav.vue'
 var checkPhone = (rule, value, callback) => {
   if (!value) {
     return callback(new Error('手机号不能为空'))
@@ -197,11 +199,13 @@ var validatePass2 = (rule, value, callback) => {
 
 export default {
   components: {
-    work
+    work,
+    mynav
   },
   name: 'home',
   data () {
     return {
+      iswhite: true,
       loginForm: {
         phone: '',
         passv: ''
@@ -293,7 +297,10 @@ export default {
       console.log(index)
     },
     upload: function () {
-      this.$router.push({path: '/management/account'})
+      this.$router.push({path: '/management/upload'})
+    },
+    openSounds () {
+      this.$router.push('/sounds')
     }
   }
 }

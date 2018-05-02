@@ -29,16 +29,16 @@ export default {
           name: '鞭炮声',
           tags: ['爆炸', '鞭炮', '测试'],
           duration: '02:23',
-          price: 12323232.21,
-          amount: 2211212
+          price: 1232.21,
+          amount: 221
         },
         {
           coverUrl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg',
           name: '鸟鸣声',
           tags: ['鸟鸣', '喜鹊', '测试', '测试'],
           duration: '03:11',
-          price: 12124453.21,
-          amount: 2465756721
+          price: 121.21,
+          amount: 2465
         },
         {
           coverUrl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg',

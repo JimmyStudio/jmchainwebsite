@@ -2,24 +2,25 @@
  * Created by Jimmy on 2018/5/2.
  */
 <template>
-  <div class="nav">
+  <div class="nav" v-bind:class="{whitetext: iswhite}">
     <div class="logo big">J&M Chain</div>
     <div class="logo small">Beta</div>
     <div class="left" @click="openHome">首页</div>
-    <div class="left">音效库</div>
+    <div class="left" @click="openSounds">音效库</div>
     <div class="op">
       <el-badge :value="200" :max="99" class="item">
         <i class="el-icon-message" ></i>
       </el-badge>
-      <el-dropdown class="user" placement="top-start">
+      <el-dropdown class="user" placement="top-start" @command="handleCommand">
           <span class="el-dropdown-link">
             <el-button type="success" circle>
               <font-awesome-icon :icon="['fas','user']"></font-awesome-icon>
             </el-button>
-            <span class="username">用户138****7241</span>
+            <span class="username" v-bind:class="{whitetext: iswhite}">用户138****7241</span>
           </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item command="0">用户中心</el-dropdown-item>
+          <el-dropdown-item command="1">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -28,9 +29,27 @@
 
 <script>
 export default {
+  props: {
+    iswhite: Boolean
+  },
   methods: {
     openHome () {
       this.$router.push('/')
+    },
+    openSounds () {
+      this.$router.push('/sounds')
+    },
+    handleCommand (command) {
+      switch (command) {
+        case '0' :
+          this.$router.push({path: '/management/account'})
+          break
+        case '1' :
+          console.log(command)
+          break
+        default:
+          break
+      }
     }
   }
 }
@@ -40,8 +59,11 @@ export default {
   .nav{
     width: 1240px;
     height: 60px;
-    /*background: white;*/
+    color: #5e5e5e;
     margin: 0 auto;
+  }
+  .whitetext{
+    color: white;
   }
   .logo{
     float: left;
@@ -65,7 +87,7 @@ export default {
     height: 60px;
     line-height: 60px;
     font-size: 16px;
-    color: #5e5e5e;
+    /*color: #5e5e5e;*/
     font-weight: 500;
   }
   .op{
@@ -77,19 +99,21 @@ export default {
   }
   .op .item{
     margin-top: 10px;
-    color: #5e5e5e;
+    /*color: #5e5e5e;*/
   }
   .op .item, .left, .el-dropdown-link:hover{
     cursor: pointer;
   }
   .el-icon-message{
     font-size: 20px;
+    font-weight: 500;
   }
   .user{
     margin-top: 10px;
     margin-left: 40px;
   }
   .username{
-    color: #5e5e5e;
+    font-weight: 500;
+    /*color: #5e5e5e;*/
   }
 </style>

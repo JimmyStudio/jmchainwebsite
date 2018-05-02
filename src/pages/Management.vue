@@ -4,7 +4,7 @@
 <template>
   <div>
     <div class="header">
-      <mynav></mynav>
+      <mynav :iswhite="iswhite"></mynav>
     </div>
     <div class="sep"></div>
     <div class="content">
@@ -42,6 +42,11 @@ import mynav from '../components/Nav.vue'
 export default {
   components: {
     mynav
+  },
+  data () {
+    return {
+      iswhite: false
+    }
   },
   methods: {
     handleSelect (key, keyPath) {
@@ -100,53 +105,4 @@ export default {
     background: white;
     margin: 0 auto;
   }
-  /*.logo{*/
-    /*float: left;*/
-    /*color: #ff5622;*/
-  /*}*/
-  /*.big{*/
-    /*font-size: 18px;*/
-    /*font-weight: 500;*/
-    /*line-height: 60px;*/
-    /*margin-left: 30px;*/
-    /*margin-right: 5px;*/
-  /*}*/
-  /*.small{*/
-    /*font-size: 12px;*/
-    /*margin-top: 15px;*/
-    /*font-weight: 500;*/
-  /*}*/
-  /*.left{*/
-    /*margin-left: 40px;*/
-    /*float: left;*/
-    /*height: 60px;*/
-    /*line-height: 60px;*/
-    /*font-size: 16px;*/
-    /*color: #5e5e5e;*/
-    /*font-weight: 500;*/
-  /*}*/
-  /*.op{*/
-    /*float: right;*/
-    /*height: 60px;*/
-    /*margin-right: 20px;*/
-    /*!*width: 180px;*!*/
-    /*!*background: red;*!*/
-  /*}*/
-  /*.op .item{*/
-    /*margin-top: 10px;*/
-    /*color: #5e5e5e;*/
-  /*}*/
-  /*.op .item, .left, .el-dropdown-link:hover{*/
-    /*cursor: pointer;*/
-  /*}*/
-  /*.el-icon-message{*/
-    /*font-size: 20px;*/
-  /*}*/
-  /*.user{*/
-    /*margin-top: 10px;*/
-    /*margin-left: 40px;*/
-  /*}*/
-  /*.username{*/
-    /*color: #5e5e5e;*/
-  /*}*/
 </style>

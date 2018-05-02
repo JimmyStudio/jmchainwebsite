@@ -3,6 +3,9 @@
     <transition name="fade" mode="out-in">
       <router-view/>
     </transition>
+    <!--<div class="copyright">-->
+      <!--© 2018 劲米科技-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -50,4 +53,21 @@ export default {
     opacity:0;
     transition:opacity .2s;
   }
+  /*.app{*/
+    /*position: relative;*/
+  /*}*/
+  /*.copyright{*/
+    /*margin: 0 auto;*/
+    /*width: 100%;*/
+    /*height: 20px;*/
+    /*!*background-color: #5e5e5e;*!*/
+    /*color: #5e5e5e;*/
+    /*font-size: 12px;*/
+    /*font-weight: 500;*/
+    /*text-align: center;*/
+    /*line-height: 20px;*/
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*bottom: 0;*/
+  /*}*/
 </style>
