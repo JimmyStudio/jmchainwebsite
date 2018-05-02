@@ -10,7 +10,7 @@
           class="upload-demo"
           drag
           action="https://jsonplaceholder.typicode.com/posts/"
-          :limit="limit"
+          :limit="form.limit"
           :file-list="fileList"
           :multiple="multiple">
           <i class="el-icon-upload"></i>
@@ -45,9 +45,9 @@ export default {
         brief: '测试测试',
         name: '',
         price: 10000,
+        limit: 1,
         checked: true
       },
-      limit: 1,
       multiple: false,
       fileList: [{
         name: 'food.mp3',
