@@ -1,7 +1,6 @@
-# jmchainwebsite
+# J&M Chain Website
 
-> website of J&M chain
-> Powered by VUE
+> Website of J&M Chain POWERED WITH VUE
 
 ## Build Setup
 
