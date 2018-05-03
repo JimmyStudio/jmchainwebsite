@@ -1,6 +1,7 @@
 # jmchainwebsite
 
 > website of J&M chain
+> powered by VUE
 
 ## Build Setup
 
