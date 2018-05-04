@@ -155,6 +155,7 @@
 <script>
 import work from '../components/Work.vue'
 import mynav from '../components/Nav.vue'
+
 var checkPhone = (rule, value, callback) => {
   if (!value) {
     return callback(new Error('手机号不能为空'))
@@ -237,60 +238,19 @@ export default {
       loginVisible: false,
       dialogCenter: true,
       car_interval: 3000,
-      works: [
-        {
-          name: 'Japan(Prod.@JGramm)',
-          author: 'Famous Dex',
-          imgurl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg'
-        },
-        {
-          name: 'Plug Walk',
-          author: 'Rich The Kid',
-          imgurl: 'http://imgcache.qq.com/music/photo/album/11/180_albumpic_78811_0.jpg'
-        },
-        {
-          name: 'Through the Storm',
-          author: 'YoungBoy Never Broke Again',
-          imgurl: 'http://imgcache.qq.com/music/photo/album/84/180_albumpic_626184_0.jpg'
-        },
-        {
-          name: 'Japan(Prod.@JGramm)',
-          author: 'Famous Dex'
-        },
-        {
-          name: 'Plug Walk',
-          author: 'Rich The Kid'
-        },
-        {
-          name: 'Through the Storm',
-          author: 'YoungBoy Never Broke Again'
-        },
-        {
-          name: 'Japan(Prod.@JGramm)',
-          author: 'Famous Dex'
-        },
-        {
-          name: 'Plug Walk',
-          author: 'Rich The Kid'
-        },
-        {
-          name: 'Through the Storm',
-          author: 'YoungBoy Never Broke Again'
-        },
-        {
-          name: 'Japan(Prod.@JGramm)',
-          author: 'Famous Dex'
-        },
-        {
-          name: 'Plug Walk',
-          author: 'Rich The Kid'
-        },
-        {
-          name: 'Through the Storm',
-          author: 'YoungBoy Never Broke Again'
-        }
-      ]
+      works: []
     }
+  },
+  created: function () {
+    console.log(this.domain + '/recommend')
+    this.$http.post(this.domain + '/recommend', {token: ''})
+      .then((response) => {
+        this.works = response.data.list
+        console.log(this.works)
+      })
+      .catch(function (response) {
+        console.log(response)
+      })
   },
   methods: {
     showWorkDetail: function (index) {

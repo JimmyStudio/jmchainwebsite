@@ -5,11 +5,11 @@
   <div>
     <div class="cover">
       <div class="mask" v-on:click="showDetail"></div>
-      <img :src="work.imgurl"/>
+      <img :src="this.domain + work.cover_image_path"/>
     </div>
     <div class="desc">
       <div class="name">{{work.name}}</div>
-      <div class="author">{{work.author}}</div>
+      <div class="author">{{work.author_name}}</div>
     </div>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     showDetail: function () {
-      this.$emit('showWorkDetail', this.index)
+      this.$emit('showDetail', this.index)
     }
   }
 }
