@@ -241,12 +241,10 @@ export default {
       works: []
     }
   },
-  created: function () {
-    console.log(this.domain + '/recommend')
+  mounted: function () {
     this.$http.post(this.domain + '/recommend', {token: ''})
       .then((response) => {
         this.works = response.data.list
-        console.log(this.works)
       })
       .catch(function (response) {
         console.log(response)

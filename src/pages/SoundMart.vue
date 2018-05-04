@@ -59,64 +59,13 @@ export default {
       currentPage: 1,
       search: '',
       iswhite: true,
-      works: [
-        {
-          coverUrl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg',
-          name: '鞭炮声',
-          tags: ['爆炸', '鞭炮', '测试'],
-          duration: '02:23',
-          price: 132.21,
-          amount: 222
-        },
-        {
-          coverUrl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg',
-          name: '鸟鸣声',
-          tags: ['鸟鸣', '喜鹊', '测试', '测试'],
-          duration: '03:11',
-          price: 123.21,
-          amount: 2721
-        },
-        {
-          coverUrl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg',
-          name: '鸟鸣声',
-          tags: ['鸟鸣', '喜鹊'],
-          duration: '03:11',
-          price: 123.21,
-          amount: 221
-        },
-        {
-          coverUrl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg',
-          name: '鸟鸣声',
-          tags: ['鸟鸣', '喜鹊'],
-          duration: '03:11',
-          price: 123.21,
-          amount: 221
-        },
-        {
-          coverUrl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg',
-          name: '鸟鸣声',
-          tags: ['鸟鸣', '喜鹊'],
-          duration: '03:11',
-          price: 123.21,
-          amount: 221
-        },
-        {
-          coverUrl: 'http://pic.5tu.cn/uploads/allimg/201710/pic_5tu_thumb_201709192108079563.jpg',
-          name: '鸟鸣声',
-          tags: ['鸟鸣', '喜鹊'],
-          duration: '03:11',
-          price: 123.21,
-          amount: 221
-        }
-      ]
+      works: []
     }
   },
-  created: function () {
-    console.log(this.domain + '/recommend')
+  mounted: function () {
     this.$http.post(this.domain + '/recommend', {token: ''})
       .then((response) => {
         this.works = response.data.list
-        console.log(this.works)
       })
       .catch(function (response) {
         console.log(response)
