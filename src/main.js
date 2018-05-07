@@ -18,7 +18,8 @@ fontawesome.library.add(regular)
 fontawesome.library.add(brands)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-Vue.prototype.domain = 'http://127.0.0.1:8888'
+Vue.prototype.domain = 'http://localhost:8888'
+// Vue.prototype.domain = 'http://jinmiok.com:8888'
 Vue.use(ElementUI)
 Vue.use(VueResource)
 Vue.config.productionTip = false

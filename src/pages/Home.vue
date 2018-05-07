@@ -6,11 +6,7 @@
     <div class="line"></div>
     <div class="banner">
       <div class="head">
-        <mynav :iswhite="iswhite"></mynav>
-        <!--<div class="logo big">J&M Chain</div>-->
-        <!--<div class="logo small">Beta</div>-->
-        <!--<div class="btn register" @click="registerVisible=true">注册</div>-->
-        <!--<div class="btn login" @click="loginVisible=true">登录</div>-->
+        <mynav :iswhite="iswhite" :token="hasToken" :user="user" v-on:login="doLogin" v-on:register="doRegister" v-on:logout="doLogout"></mynav>
       </div>
       <div class="car">
         <el-carousel trigger="click" height="450px" :interval=car_interval>
@@ -145,7 +141,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">登 录</el-button>
+          <el-button type="primary" @click="goLogin">登 录</el-button>
           </span>
     </el-dialog>
 
@@ -206,6 +202,8 @@ export default {
   name: 'home',
   data () {
     return {
+      hasToken: false,
+      user: {},
       iswhite: true,
       loginForm: {
         phone: '',
@@ -242,6 +240,13 @@ export default {
     }
   },
   mounted: function () {
+    let user = localStorage.getItem('user_info')
+    if (user) {
+      this.hasToken = true
+      this.user = JSON.parse(user)
+    } else {
+      this.hasToken = false
+    }
     this.$http.post(this.domain + '/recommend', {token: ''})
       .then((response) => {
         this.works = response.data.list
@@ -255,10 +260,46 @@ export default {
       console.log(index)
     },
     upload: function () {
-      this.$router.push({path: '/management/upload'})
+      if (this.user) {
+        this.$router.push({path: '/management/upload'})
+      } else {
+        this.$message.error('请登录后再进行操作！')
+      }
     },
     openSounds () {
       this.$router.push('/sounds')
+    },
+    doLogin () {
+      this.loginVisible = true
+    },
+    doRegister () {
+      this.registerVisible = true
+    },
+    goLogin () {
+      this.$http.post(this.domain + '/login', {phone: this.loginForm.phone, password: this.loginForm.passv})
+        .then((response) => {
+          let user = response.data
+          if (user.err === '100') {
+            localStorage.setItem('user_info', JSON.stringify(user))
+            this.loginVisible = false
+            this.$notify.success({
+              title: '成功',
+              message: '登录成功'
+            })
+            this.hasToken = true
+            this.user = JSON.parse(user)
+          } else {
+            this.$message.error(user.message)
+          }
+        })
+        .catch(function (response) {
+          console.log(response)
+        })
+    },
+    doLogout () {
+      localStorage.clear()
+      this.hasToken = false
+      this.user = {}
     }
   }
 }
