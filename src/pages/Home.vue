@@ -93,7 +93,6 @@
         </div>
       </div>
     </div>
-    <!--<div class="bot-line"></div>-->
     <div class="copyright">
       © 2018 劲米科技
     </div>
@@ -102,6 +101,7 @@
 
 <script>
 import work from '../components/Work.vue'
+
 export default {
   components: {
     work

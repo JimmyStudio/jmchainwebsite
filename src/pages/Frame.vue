@@ -2,62 +2,67 @@
  * Created by Jimmy on 2018/5/7.
  */
 <template>
-  <div class="frame">
-    <div class="head">
-      <mynav :iswhite="iswhite" :token="hasToken" :user="user" v-on:login="doLogin" v-on:register="doRegister" v-on:logout="doLogout"></mynav>
-    </div>
-    <div class="content">
-      <transition name="fade" mode="out-in">
-        <router-view></router-view>
-      </transition>
-    </div>
-    <el-dialog
-      title="注册"
-      :visible.sync="registerVisible"
-      width="30%"
-      :center="dialogCenter">
-      <el-form :model="registerForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="registerForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="验证码" prop="pass">
-          <el-input type="password" v-model="registerForm.pass" auto-complete="off">
-            <el-button slot="append" type="primary">发送验证码</el-button>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="pw">
-          <el-input v-model.number="registerForm.pw"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="pwa">
-          <el-input v-model.number="registerForm.pwa"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
+  <div>
+    <div class="frame">
+      <div class="head">
+        <mynav :iswhite="iswhite" :token="hasToken" :user="user" v-on:login="doLogin" v-on:register="doRegister" v-on:logout="doLogout"></mynav>
+      </div>
+      <div class="content">
+        <transition name="fade" mode="out-in">
+          <router-view></router-view>
+        </transition>
+      </div>
+      <el-dialog
+        title="注册"
+        :visible.sync="registerVisible"
+        width="30%"
+        :center="dialogCenter">
+        <el-form :model="registerForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
+          <el-form-item label="手机号" prop="phone">
+            <el-input v-model.number="registerForm.phone"></el-input>
+          </el-form-item>
+          <el-form-item label="验证码" prop="pass">
+            <el-input type="password" v-model="registerForm.pass" auto-complete="off">
+              <el-button slot="append" type="primary">发送验证码</el-button>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="pw">
+            <el-input v-model.number="registerForm.pw"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="pwa">
+            <el-input v-model.number="registerForm.pwa"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false">注 册</el-button>
           </span>
-    </el-dialog>
-    <el-dialog
-      title="登录"
-      :visible.sync="loginVisible"
-      width="30%"
-      :center="dialogCenter">
-      <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="loginForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="passv">
-          <el-input type="password" v-model="loginForm.passv" auto-complete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
+      </el-dialog>
+      <el-dialog
+        title="登录"
+        :visible.sync="loginVisible"
+        width="30%"
+        :center="dialogCenter">
+        <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
+          <el-form-item label="手机号" prop="phone">
+            <el-input v-model.number="loginForm.phone"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="passv">
+            <el-input type="password" v-model="loginForm.passv" auto-complete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="goLogin">登 录</el-button>
           </span>
-    </el-dialog>
+      </el-dialog>
+    </div>
+    <myplayer></myplayer>
   </div>
 </template>
 
 <script>
 import mynav from '../components/Nav.vue'
+import myplayer from '../components/Player.vue'
+
 var checkPhone = (rule, value, callback) => {
   if (!value) {
     return callback(new Error('手机号不能为空'))
@@ -99,7 +104,8 @@ var validatePass2 = (rule, value, callback) => {
 }
 export default {
   components: {
-    mynav
+    mynav,
+    myplayer
   },
   data () {
     return {
@@ -151,11 +157,8 @@ export default {
     $route (to, from) {
       let tos = to.fullPath.split('/')
       this.iswhite = true
-      for (var idx in tos) {
-        if (tos[idx] === 'management') {
-          this.iswhite = false
-          break
-        }
+      if (tos.includes('management')) {
+        this.iswhite = false
       }
     }
   },
@@ -211,6 +214,7 @@ export default {
   .content{
     position: absolute;
     z-index: 100;
+    margin-bottom: 50px;
   }
   .fade-enter {
     opacity:0;
@@ -219,10 +223,10 @@ export default {
     opacity:1;
   }
   .fade-enter-active{
-    transition:opacity .3s;
+    transition:opacity .2s;
   }
   .fade-leave-active{
     opacity:0;
-    transition:opacity .3s;
+    transition:opacity .2s;
   }
 </style>

@@ -57,11 +57,11 @@ export default {
     opacity:1;
   }
   .fade-enter-active{
-    transition:opacity .3s;
+    transition:opacity .2s;
   }
   .fade-leave-active{
     opacity:0;
-    transition:opacity .3s;
+    transition:opacity .2s;
   }
   .left-content{
     width: 120px;
