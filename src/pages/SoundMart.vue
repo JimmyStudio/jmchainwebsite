@@ -4,7 +4,6 @@
 <template>
   <div>
     <div class="header">
-      <mynav class="nav" :iswhite="iswhite"></mynav>
       <div class="search">
         <el-input class="search-input"
           placeholder="搜索作品、作者、类型..."
@@ -44,12 +43,10 @@
 </template>
 
 <script>
-import mynav from '../components/Nav.vue'
 import saleitem from '../components/SaleItem.vue'
 
 export default {
   components: {
-    mynav,
     saleitem
   },
   data () {
@@ -58,7 +55,6 @@ export default {
       total: 1000,
       currentPage: 1,
       search: '',
-      iswhite: true,
       works: []
     }
   },

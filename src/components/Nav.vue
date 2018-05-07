@@ -78,9 +78,11 @@ export default {
     height: 60px;
     color: #5e5e5e;
     margin: 0 auto;
+    background-color: white;
   }
   .whitetext{
     color: white;
+    background: none;
   }
   .logo{
     float: left;

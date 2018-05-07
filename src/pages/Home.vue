@@ -3,11 +3,7 @@
  */
 <template>
   <div class="main">
-    <div class="line"></div>
     <div class="banner">
-      <div class="head">
-        <mynav :iswhite="iswhite" :token="hasToken" :user="user" v-on:login="doLogin" v-on:register="doRegister" v-on:logout="doLogout"></mynav>
-      </div>
       <div class="car">
         <el-carousel trigger="click" height="450px" :interval=car_interval>
           <el-carousel-item>
@@ -101,152 +97,24 @@
     <div class="copyright">
       © 2018 劲米科技
     </div>
-    <el-dialog
-      title="注册"
-      :visible.sync="registerVisible"
-      width="30%"
-      :center="dialogCenter">
-      <el-form :model="registerForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="registerForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="验证码" prop="pass">
-          <el-input type="password" v-model="registerForm.pass" auto-complete="off">
-            <el-button slot="append" type="primary">发送验证码</el-button>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="pw">
-          <el-input v-model.number="registerForm.pw"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="pwa">
-          <el-input v-model.number="registerForm.pwa"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">注 册</el-button>
-          </span>
-    </el-dialog>
-
-    <el-dialog
-      title="登录"
-      :visible.sync="loginVisible"
-      width="30%"
-      :center="dialogCenter">
-      <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="loginForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="passv">
-          <el-input type="password" v-model="loginForm.passv" auto-complete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="goLogin">登 录</el-button>
-          </span>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
 import work from '../components/Work.vue'
-import mynav from '../components/Nav.vue'
-
-var checkPhone = (rule, value, callback) => {
-  if (!value) {
-    return callback(new Error('手机号不能为空'))
-  }
-  setTimeout(() => {
-    if (!Number.isInteger(value)) {
-      callback(new Error('请输入正确的手机号'))
-    }
-  }, 1000)
-}
-var validatePass = (rule, value, callback) => {
-  if (value === '') {
-    return callback(new Error('请输入验证码'))
-  }
-}
-
-var validatePass3 = (rule, value, callback) => {
-  if (value === '') {
-    return callback(new Error('请输入密码'))
-  }
-}
-
-var validatePass1 = (rule, value, callback) => {
-  if (value === '') {
-    callback(new Error('请输入密码'))
-  } else {
-    if (this.rules.pwa !== '') {
-      this.$refs.rules.validateField('pwa')
-    }
-    callback()
-  }
-}
-var validatePass2 = (rule, value, callback) => {
-  if (value === '') {
-    callback(new Error('请再次输入密码'))
-  } else if (value !== this.ruleForm2.pass) {
-    callback(new Error('两次输入密码不一致!'))
-  } else {
-    callback()
-  }
-}
-
 export default {
   components: {
-    work,
-    mynav
+    work
   },
   name: 'home',
   data () {
     return {
-      hasToken: false,
       user: {},
-      iswhite: true,
-      loginForm: {
-        phone: '',
-        passv: ''
-      },
-      registerForm: {
-        phone: '',
-        pass: '',
-        pw: '',
-        pwa: ''
-      },
-      rules: {
-        passv: [
-          { validator: validatePass3, trigger: 'blur' }
-        ],
-        phone: [
-          { validator: checkPhone, trigger: 'blur' }
-        ],
-        pass: [
-          { validator: validatePass, trigger: 'blur' }
-        ],
-        pw: [
-          { validator: validatePass1, trigger: 'blur' }
-        ],
-        pwa: [
-          { validator: validatePass2, trigger: 'blur' }
-        ]
-      },
-      registerVisible: false,
-      loginVisible: false,
-      dialogCenter: true,
       car_interval: 3000,
       works: []
     }
   },
   mounted: function () {
-    let user = localStorage.getItem('user_info')
-    if (user) {
-      this.hasToken = true
-      this.user = JSON.parse(user)
-    } else {
-      this.hasToken = false
-    }
     this.$http.post(this.domain + '/recommend', {token: ''})
       .then((response) => {
         this.works = response.data.list
@@ -260,7 +128,8 @@ export default {
       console.log(index)
     },
     upload: function () {
-      if (this.user) {
+      let user = localStorage.getItem('user_info')
+      if (user) {
         this.$router.push({path: '/management/upload'})
       } else {
         this.$message.error('请登录后再进行操作！')
@@ -268,38 +137,6 @@ export default {
     },
     openSounds () {
       this.$router.push('/sounds')
-    },
-    doLogin () {
-      this.loginVisible = true
-    },
-    doRegister () {
-      this.registerVisible = true
-    },
-    goLogin () {
-      this.$http.post(this.domain + '/login', {phone: this.loginForm.phone, password: this.loginForm.passv})
-        .then((response) => {
-          let user = response.data
-          if (user.err === '100') {
-            localStorage.setItem('user_info', JSON.stringify(user))
-            this.loginVisible = false
-            this.$notify.success({
-              title: '成功',
-              message: '登录成功'
-            })
-            this.hasToken = true
-            this.user = JSON.parse(user)
-          } else {
-            this.$message.error(user.message)
-          }
-        })
-        .catch(function (response) {
-          console.log(response)
-        })
-    },
-    doLogout () {
-      localStorage.clear()
-      this.hasToken = false
-      this.user = {}
     }
   }
 }
@@ -320,12 +157,6 @@ export default {
     height: 450px;
     margin: 0 auto;
     position: relative;
-  }
-  .head{
-    position: absolute;
-    z-index: 2;
-    width: 100%;
-    height: 60px;
   }
   .car{
     width: 100%;
@@ -348,37 +179,6 @@ export default {
     width: 100%;
     height: 100%;
   }
-  .btn{
-    float: right;
-    height: 30px;
-    width: 80px;
-    color: white;
-    line-height: 30px;
-    font-size: 14px;
-    border-radius: 4px;
-    text-align: center;
-    margin-top: 15px;
-  }
-  .btn:hover{
-    cursor: pointer;
-  }
-  .register{
-    background-color: #ff5622;
-    margin-right: 30px;
-  }
-  .login{
-    margin-right: 15px;
-    border: 1px solid #e5e5e5;
-    height: 28px;
-  }
-  .login:hover{
-    border-color: white;
-    cursor: pointer;
-  }
-  .register:hover, .upload:hover, .more:hover{
-    background-color: #ff6000;
-    cursor: pointer;
-  }
   .car-item p {
     color: white;
     text-align: center;
@@ -394,23 +194,6 @@ export default {
   .car-item .detail{
     position: absolute;
     margin-top: 240px;
-  }
-  .logo{
-    float: left;
-    color: white;
-  }
-  .big{
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 60px;
-    margin-left: 30px;
-    margin-right: 5px;
-  }
-  .small{
-    font-size: 12px;
-    margin-top: 15px;
-    color: #ff5622;
-    font-weight: 500;
   }
   .op{
     background: white;

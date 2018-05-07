@@ -6,6 +6,7 @@ import Account from '@/components/Account'
 import MyWorks from '@/components/MyWorks'
 import Upload from '@/components/Upload'
 import SoundMart from '@/pages/SoundMart'
+import Frame from '@/pages/Frame'
 
 Vue.use(Router)
 
@@ -14,35 +15,42 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/management',
-      name: 'Management',
-      component: Management,
+      component: Frame,
       children: [
         {
-          path: 'account',
-          name: 'Account',
-          component: Account
+          path: '',
+          name: 'Home',
+          component: Home
         },
         {
-          path: 'works',
-          name: 'MyWorks',
-          component: MyWorks
+          path: 'management',
+          name: 'Management',
+          component: Management,
+          children: [
+            {
+              path: 'account',
+              name: 'Account',
+              component: Account
+            },
+            {
+              path: 'works',
+              name: 'MyWorks',
+              component: MyWorks
+            },
+            {
+              path: 'upload',
+              name: 'Upload',
+              component: Upload
+            }
+          ]
         },
         {
-          path: 'upload',
-          name: 'Upload',
-          component: Upload
+          path: 'sounds',
+          name: 'SoundMart',
+          component: SoundMart
         }
       ]
-    },
-    {
-      path: '/sounds',
-      name: 'SoundMart',
-      component: SoundMart
+
     }
   ]
 })

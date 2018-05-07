@@ -3,9 +3,6 @@
  */
 <template>
   <div>
-    <div class="header">
-      <mynav :iswhite="iswhite"></mynav>
-    </div>
     <div class="sep"></div>
     <div class="content">
       <div class="left-content">
@@ -37,17 +34,7 @@
 </template>
 
 <script>
-import mynav from '../components/Nav.vue'
-
 export default {
-  components: {
-    mynav
-  },
-  data () {
-    return {
-      iswhite: false
-    }
-  },
   methods: {
     handleSelect (key, keyPath) {
       if (key === '1') {
@@ -92,6 +79,7 @@ export default {
   .sep{
     width: 100%;
     height: 4px;
+    margin-top: 60px;
   }
   .content{
     width: 1240px;
