@@ -26,7 +26,7 @@
         <font-awesome-icon :icon="['fas','retweet']" class="op-item"></font-awesome-icon>
       </div>
       <div class="start">
-        00:00
+        {{currentTime}}
       </div>
       <div class="wrapper" ref="wrapper">
         <div class="center-line"></div>
@@ -66,6 +66,7 @@ export default {
   },
   data () {
     return {
+      currentTime: '00:00',
       duration: 0,
       inter: null,
       isPlaying: true,
@@ -154,7 +155,9 @@ export default {
       let dom2 = this.$refs.slider
       let dom3 = this.$refs.fill
       let audio = this.$refs.myplayer
+      let that = this
       this.inter = setInterval(function () {
+        that.currentTime = that.converTime(audio.currentTime)
         var offset = parseInt((audio.currentTime / audio.duration) * 600)
         dom2.style.left = offset - 4 + 'px'
         dom3.style.width = offset + 'px'
