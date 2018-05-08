@@ -176,12 +176,12 @@ export default {
           if (user.err === '100') {
             localStorage.setItem('user_info', JSON.stringify(user))
             this.loginVisible = false
+            this.user = user
             this.$notify.success({
               title: '成功',
               message: '登录成功'
             })
             this.hasToken = true
-            this.user = JSON.parse(user)
           } else {
             this.$message.error(user.message)
           }
@@ -191,9 +191,20 @@ export default {
         })
     },
     doLogout () {
-      localStorage.clear()
-      this.hasToken = false
-      this.user = {}
+      this.$http.post(this.domain + '/logout', {token: this.user.token})
+        .then((response) => {
+          let res = response.data
+          if (res.err === '100') {
+            localStorage.clear()
+            this.hasToken = false
+            this.user = {}
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+        .catch(function (response) {
+          console.log(response)
+        })
     }
   }
 }

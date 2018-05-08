@@ -61,7 +61,6 @@ export default {
           this.$router.push({path: '/management/account'})
           break
         case '1' :
-          console.log(command)
           this.$emit('logout')
           break
         default:
