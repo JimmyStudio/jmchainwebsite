@@ -55,13 +55,13 @@
           </span>
       </el-dialog>
     </div>
-    <myplayer></myplayer>
+    <!--<myplayer></myplayer>-->
   </div>
 </template>
 
 <script>
 import mynav from '../components/Nav.vue'
-import myplayer from '../components/Player.vue'
+// import myplayer from '../components/Player.vue'
 
 var checkPhone = (rule, value, callback) => {
   if (!value) {
@@ -104,8 +104,7 @@ var validatePass2 = (rule, value, callback) => {
 }
 export default {
   components: {
-    mynav,
-    myplayer
+    mynav
   },
   data () {
     return {
@@ -213,19 +212,23 @@ export default {
 <style scoped>
   .frame{
     position: relative;
-    width: 1240px;
-    margin: 0 auto;
+    /*width: 1240px;*/
+    /*margin: 0 auto;*/
   }
   .head{
     position: absolute;
     z-index: 200;
     width: 100%;
     height: 60px;
+    /*background: red;*/
   }
   .content{
     position: absolute;
     z-index: 100;
-    margin-bottom: 50px;
+    width: 100%;
+    /*background: red;*/
+    /*margin:  0 auto;*/
+    /*margin-bottom: 50px;*/
   }
   .fade-enter {
     opacity:0;

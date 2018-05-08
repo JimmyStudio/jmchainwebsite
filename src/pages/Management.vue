@@ -3,31 +3,33 @@
  */
 <template>
   <div>
-    <div class="sep"></div>
-    <div class="content">
-      <div class="left-content">
-        <el-menu
-          default-active="1"
-          class="el-menu-vertical"
-          @select="handleSelect">
-          <el-menu-item index="1">
-            <i class="el-icon-news"></i>
-            <span slot="title">账户</span>
-          </el-menu-item>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">作品</span>
-          </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-upload"></i>
-            <span slot="title">上传</span>
-          </el-menu-item>
-        </el-menu>
-      </div>
-      <div class="right-content">
-        <transition name="fade" mode="out-in">
-          <router-view></router-view>
-        </transition>
+    <div class="main-content">
+      <div class="sep"></div>
+      <div class="content">
+        <div class="left-content">
+          <el-menu
+            default-active="1"
+            class="el-menu-vertical"
+            @select="handleSelect">
+            <el-menu-item index="1">
+              <i class="el-icon-news"></i>
+              <span slot="title">账户</span>
+            </el-menu-item>
+            <el-menu-item index="2">
+              <i class="el-icon-menu"></i>
+              <span slot="title">作品</span>
+            </el-menu-item>
+            <el-menu-item index="3">
+              <i class="el-icon-upload"></i>
+              <span slot="title">上传</span>
+            </el-menu-item>
+          </el-menu>
+        </div>
+        <div class="right-content">
+          <transition name="fade" mode="out-in">
+            <router-view></router-view>
+          </transition>
+        </div>
       </div>
     </div>
   </div>
@@ -50,6 +52,12 @@ export default {
 </script>
 
 <style scoped>
+  .main-content{
+    /*position: relative;*/
+    width: 1240px;
+    margin:  0 auto;
+    /*background: red;*/
+  }
   .fade-enter {
     opacity:0;
   }
@@ -82,15 +90,9 @@ export default {
     margin-top: 60px;
   }
   .content{
-    width: 1240px;
+    /*width: 1240px;*/
     /*height: 900px;*/
     background: white;
-    margin: 0 auto;
-  }
-  .header{
-    width: 1240px;
-    height: 60px;
-    background: white;
-    margin: 0 auto;
+    /*margin: 0 auto;*/
   }
 </style>

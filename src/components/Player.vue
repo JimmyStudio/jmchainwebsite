@@ -5,14 +5,18 @@
   <div class="player">
     <div class="line"></div>
     <div class="content">
-      <div class="op">
+      <div class="op" @click="backward">
         <font-awesome-icon :icon="['fas','step-backward']" class="op-item"></font-awesome-icon>
       </div>
-      <div class="op">
-        <font-awesome-icon :icon="['fas','play']" class="op-item"></font-awesome-icon>
-        <!--<font-awesome-icon :icon="['fas','pause']" class="op-item"></font-awesome-icon>-->
+      <div class="op" @click="play">
+        <div v-if="isPlaying">
+          <font-awesome-icon :icon="['fas','pause']" class="op-item"></font-awesome-icon>
+        </div>
+        <div v-else>
+          <font-awesome-icon :icon="['fas','play']" class="op-item"></font-awesome-icon>
+        </div>
       </div>
-      <div class="op">
+      <div class="op" @click="forward">
         <font-awesome-icon :icon="['fas','step-forward']" class="op-item"></font-awesome-icon>
       </div>
       <div class="op">
@@ -33,62 +37,151 @@
         </div>
       </div>
       <div class="start">
-        04:30
+        {{duration}}
       </div>
       <div class="op sound">
         <font-awesome-icon :icon="['fas','volume-off']" class="op-item"></font-awesome-icon>
       </div>
-      <div class="sound-info">
+      <div class="sound-info" v-if="loaded">
         <div class="cover sound-info-item">
-          <img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1922365848,85870530&fm=27&gp=0.jpg"/>
+          <img :src="this.domain + works[index2].cover_image_path"/>
+          <!--<img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1922365848,85870530&fm=27&gp=0.jpg"/>-->
         </div>
-        <div class="sound-name sound-info-item">片头曲</div>
-        <div class="author-name sound-info-item">admin</div>
+        <div class="sound-name sound-info-item">{{works[index2].name}}</div>
+        <div class="author-name sound-info-item">{{works[index2].author_name}}</div>
       </div>
       <div class="op">
         <font-awesome-icon :icon="['fas','heart']" class="op-item"></font-awesome-icon>
       </div>
     </div>
+    <audio ref="myplayer"></audio>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    index: Number,
+    works: Array
+  },
   data () {
     return {
-      currentTime: 0
+      duration: 0,
+      inter: null,
+      isPlaying: true,
+      loaded: false,
+      index2: -1 // 子组件不能修改父组件的值 用index2间接传递 用loaded判断是否需要渲染dom 避免由于index2=-1造成的报错
+    }
+  },
+  watch: {
+    index (newvar, oldvar) {
+      this.loaded = true
+      this.index2 = newvar
+    },
+    index2 (newvar) {
+      let work = this.works[newvar]
+      let player = this.$refs.myplayer
+      player.src = this.domain + work.local_path
+      player.load()
+      let that = this
+      player.oncanplay = function () {
+        that.duration = that.converTime(player.duration)
+        player.play()
+        that.moveSlider()
+      }
     }
   },
   mounted: function () {
-    this.$nextTick(() => {
-      let d1 = this.$refs.wrapper
-      let d2 = this.$refs.slider
-      let d3 = this.$refs.fill
-      this.move(d1, d2, d3)
-    })
+    let d1 = this.$refs.wrapper
+    let d2 = this.$refs.slider
+    let d3 = this.$refs.fill
+    this.move(d1, d2, d3)
   },
   methods: {
+    backward () {
+      if (this.index2 > 0) {
+        this.index2--
+      } else {
+        this.$message.warning('已经是第一条')
+      }
+      console.log(this.index2)
+    },
+    forward () {
+      if (this.index2 < this.works.length - 1) {
+        this.index2++
+      } else {
+        this.$message.warning('已经是最后一条')
+      }
+      console.log(this.index2)
+    },
+    play () {
+      let player = this.$refs.myplayer
+      if (this.isPlaying) {
+        clearInterval(this.inter)
+        player.pause()
+        this.isPlaying = false
+      } else {
+        player.play()
+        this.moveSlider()
+        this.isPlaying = true
+      }
+    },
+    moveSlider () {
+      let dom2 = this.$refs.slider
+      let dom3 = this.$refs.fill
+      let audio = this.$refs.myplayer
+      this.inter = setInterval(function () {
+        var offset = parseInt((audio.currentTime / audio.duration) * 600)
+        dom2.style.left = offset - 4 + 'px'
+        dom3.style.width = offset + 'px'
+      }, 100)
+    },
+    converTime (sec) {
+      var h = parseInt(sec / 3600)
+      var mleft = sec % 3600
+      var m = parseInt(mleft / 60)
+      var sleft = parseInt(mleft % 60)
+      if (sleft < 10) {
+        sleft = '0' + sleft
+      }
+      if (m < 10) {
+        m = '0' + m
+      }
+      if (h === 0) {
+        return m + ':' + sleft
+      } else {
+        if (m < 10) {
+          m = '0' + m
+        }
+        return h + ':' + m + ':' + sleft
+      }
+    },
     move (dom1, dom2, dom3) {
       // drag用来存储滑块允许拖拽和不允许拖拽的状态
+      var that = this
+      let player = this.$refs.myplayer
       var drag = 0
+      var currentTime = 0
       // 在滑动条上绑定click事件以实现点击任意位置,自动调整滑块和填充块的效果
       dom1.addEventListener('click', function (e) {
         if (e.target === dom2) {
           // 点击滑块自身不做任何事情
         } else {
+          clearInterval(that.inter)
           if (e.offsetX > 600) {
             dom2.style.left = '596px'
             dom3.style.width = '600px'
-            this.currentTime = 600
+            currentTime = 600
           } else if (e.offsetX < 0) {
             dom2.style.left = '-4px'
             dom3.style.width = '0px'
-            this.currentTime = 0
+            currentTime = 0
           } else {
             dom2.style.left = e.offsetX - 4 + 'px'
             dom3.style.width = e.offsetX + 'px'
-            this.currentTime = e.offsetX
+            currentTime = e.offsetX
           }
+          player.currentTime = (currentTime / 600) * player.duration
         }
       })
       // 修改drag的状态
@@ -105,19 +198,21 @@ export default {
           if (e.target === dom2) {
             // 点击滑块自身不做任何事情
           } else {
+            clearInterval(that.inter)
             if (e.offsetX > 600) {
               dom2.style.left = '596px'
               dom3.style.width = '600px'
-              this.currentTime = 600
+              currentTime = 600
             } else if (e.offsetX < 0) {
               dom2.style.left = '-4px'
               dom3.style.width = '0px'
-              this.currentTime = 600
+              currentTime = 600
             } else {
               dom2.style.left = e.offsetX - 4 + 'px'
               dom3.style.width = e.offsetX + 'px'
-              this.currentTime = e.offsetX
+              currentTime = e.offsetX
             }
+            player.currentTime = (currentTime / 600) * player.duration
           }
         }
       })

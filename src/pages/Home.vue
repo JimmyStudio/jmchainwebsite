@@ -3,115 +3,124 @@
  */
 <template>
   <div class="main">
-    <div class="banner">
-      <div class="car">
-        <el-carousel trigger="click" height="450px" :interval=car_interval>
-          <el-carousel-item>
-            <div class="car-item car-1">
-              <p class="title">致力于泛文娱区块链的场景实现和价值挖掘</p>
-              <p class="detail">围绕数字媒体，新媒体，在版权，云分发交易，共识机制，应用等环节打造去中心化的区块链。</p>
+    <div class="main-content" v-bind:class="{mb: showPlayer}">
+      <div class="banner">
+        <div class="car">
+          <el-carousel trigger="click" height="450px" :interval=car_interval>
+            <el-carousel-item>
+              <div class="car-item car-1">
+                <p class="title">致力于泛文娱区块链的场景实现和价值挖掘</p>
+                <p class="detail">围绕数字媒体，新媒体，在版权，云分发交易，共识机制，应用等环节打造去中心化的区块链。</p>
+              </div>
+            </el-carousel-item>
+            <el-carousel-item>
+              <div class="car-item car-2">
+                <p class="title">J&M区块链引擎</p>
+                <p class="detail">自主研发的基于区块链开发引擎，重构泛娱乐价值、重构网络生态。</p>
+              </div>
+            </el-carousel-item>
+            <el-carousel-item>
+              <div class="car-item car-3">
+                <p class="title">J&M泛娱乐分发平台</p>
+                <p class="detail">在基础结构和协议层面上完美解决泛娱乐IP的所有权和交易分享。</p>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+      </div>
+      <div class="op">
+        <div class="search">
+          <input class="input" placeholder="搜索作品、作者、类型..."/>
+          <i class="el-icon-search"></i>
+        </div>
+        <div class="upload" v-on:click="upload">上传</div>
+      </div>
+      <div class="recommend">
+        <div class="rec-title"> —— 热门推荐 —— </div>
+        <div class="rec-content">
+          <work class="rec-work" v-for="(item,index) in works" :key="index" :index="index" :work="item" v-on:showDetail="showWorkDetail"></work>
+        </div>
+        <div class="explore">
+          <div class="more" @click="openSounds">发现更多</div>
+        </div>
+      </div>
+      <div class="bot-line"></div>
+      <div class="bottom">
+        <div class="bot-item bot-left">
+          <div class="left-item left-title">J&M Chain</div>
+          <div class="left-item">
+            <i class="el-icon-location-outline"></i><span>上海市浦东新区浦东南路3456号江天大厦</span>
+          </div>
+          <div class="left-item">
+            <i class="el-icon-message"></i><span>hezuo@jinmiok.com</span>
+          </div>
+          <div class="left-item">
+            <i class="el-icon-phone-outline"></i><span>400-9659600</span>
+          </div>
+        </div>
+        <div class="bot-item bot-right">
+          <div class="right-item">
+            <div class="left-item left-title">条款声明</div>
+            <div class="left-item">
+              <span>网站条款</span>
             </div>
-          </el-carousel-item>
-          <el-carousel-item>
-            <div class="car-item car-2">
-              <p class="title">J&M区块链引擎</p>
-              <p class="detail">自主研发的基于区块链开发引擎，重构泛娱乐价值、重构网络生态。</p>
+            <div class="left-item">
+              <span>版权声明</span>
             </div>
-          </el-carousel-item>
-          <el-carousel-item>
-            <div class="car-item car-3">
-              <p class="title">J&M泛娱乐分发平台</p>
-              <p class="detail">在基础结构和协议层面上完美解决泛娱乐IP的所有权和交易分享。</p>
+          </div>
+          <div class="right-item">
+            <div class="left-item left-title">关于我们</div>
+            <div class="left-item">
+              <span>关于J&M</span>
             </div>
-          </el-carousel-item>
-        </el-carousel>
+            <div class="left-item">
+              <span>产品服务</span>
+            </div>
+            <div class="left-item">
+              <span>联系我们</span>
+            </div>
+          </div>
+          <div class="right-item">
+            <div class="left-item left-title">帮助信息</div>
+            <div class="left-item">
+              <span>常见问题</span>
+            </div>
+            <div class="left-item">
+              <span>授权查询</span>
+            </div>
+            <div class="left-item">
+              <span>意见反馈</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        © 2018 劲米科技
       </div>
     </div>
-    <div class="op">
-      <div class="search">
-        <input class="input" placeholder="搜索作品、作者、类型..."/>
-        <i class="el-icon-search"></i>
-      </div>
-      <div class="upload" v-on:click="upload">上传</div>
-    </div>
-    <div class="recommend">
-      <div class="rec-title"> —— 热门推荐 —— </div>
-      <div class="rec-content">
-        <work class="rec-work" v-for="(item,index) in works" :key="index" :index="index" :work="item" v-on:showDetail="showWorkDetail"></work>
-      </div>
-      <div class="explore">
-        <div class="more" @click="openSounds">发现更多</div>
-      </div>
-    </div>
-    <div class="bot-line"></div>
-    <div class="bottom">
-      <div class="bot-item bot-left">
-        <div class="left-item left-title">J&M Chain</div>
-        <div class="left-item">
-          <i class="el-icon-location-outline"></i><span>上海市浦东新区浦东南路3456号江天大厦</span>
-        </div>
-        <div class="left-item">
-          <i class="el-icon-message"></i><span>hezuo@jinmiok.com</span>
-        </div>
-        <div class="left-item">
-          <i class="el-icon-phone-outline"></i><span>400-9659600</span>
-        </div>
-      </div>
-      <div class="bot-item bot-right">
-        <div class="right-item">
-          <div class="left-item left-title">条款声明</div>
-          <div class="left-item">
-            <span>网站条款</span>
-          </div>
-          <div class="left-item">
-            <span>版权声明</span>
-          </div>
-        </div>
-        <div class="right-item">
-          <div class="left-item left-title">关于我们</div>
-          <div class="left-item">
-            <span>关于J&M</span>
-          </div>
-          <div class="left-item">
-            <span>产品服务</span>
-          </div>
-          <div class="left-item">
-            <span>联系我们</span>
-          </div>
-        </div>
-        <div class="right-item">
-          <div class="left-item left-title">帮助信息</div>
-          <div class="left-item">
-            <span>常见问题</span>
-          </div>
-          <div class="left-item">
-            <span>授权查询</span>
-          </div>
-          <div class="left-item">
-            <span>意见反馈</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="copyright">
-      © 2018 劲米科技
+    <div class="player-content" v-show="showPlayer">
+      <myplayer :index="index" :works="works"></myplayer>
     </div>
   </div>
 </template>
 
 <script>
 import work from '../components/Work.vue'
+import myplayer from '../components/Player.vue'
 
 export default {
   components: {
-    work
+    work,
+    myplayer
   },
   name: 'home',
   data () {
     return {
       user: {},
+      index: -1,
       car_interval: 3000,
-      works: []
+      showPlayer: false,
+      works: [{}]
     }
   },
   mounted: function () {
@@ -125,7 +134,8 @@ export default {
   },
   methods: {
     showWorkDetail: function (index) {
-      console.log(index)
+      this.index = index
+      this.showPlayer = true
     },
     upload: function () {
       let user = localStorage.getItem('user_info')
@@ -144,16 +154,21 @@ export default {
 
 <style scoped>
   .main{
-    background: #f2f2f2;
+    /*background: red;*/
+    /*width: 1240px;*/
+    /*margin: 0 auto;*/
   }
-  .line{
+  .main-content{
+    /*position: relative;*/
     width: 1240px;
-    height: 4px;
-    background: #ff5622;
-    margin: 0 auto;
+    margin:  0 auto;
+    /*background: red;*/
+  }
+  .mb{
+    margin-bottom: 50px;
   }
   .banner{
-    width: 1240px;
+    width: 100%;
     height: 450px;
     margin: 0 auto;
     position: relative;
@@ -198,7 +213,7 @@ export default {
   .op{
     background: white;
     margin: 0 auto;
-    width: 1240px;
+    width: 100%;
     height: 110px;
     position: relative;
   }
@@ -257,9 +272,10 @@ export default {
     border-radius: 6px;
     font-size: 16px;
     font-weight: 500;
+    cursor: pointer;
   }
   .recommend{
-    width: 1240px;
+    width: 100%;
     background: white;
     margin: 0 auto;
   }
@@ -304,7 +320,7 @@ export default {
     margin: 0 auto;
   }
   .bottom{
-    width: 1240px;
+    width: 100%;
     /*height: 250px;*/
     margin: 0 auto;
     background-color: white;
@@ -348,8 +364,8 @@ export default {
     /*background: red;*/
   }
   .copyright{
-    margin: 0 auto;
-    width: 1240px;
+    /*margin: 0 auto;*/
+    width: 100%;
     height: 20px;
     /*background-color: #5e5e5e;*/
     color: #5e5e5e;
