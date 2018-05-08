@@ -92,6 +92,9 @@ export default {
         player.play()
         that.moveSlider()
       }
+      player.onended = function () {
+        that.isPlaying = false
+      }
     }
   },
   mounted: function () {
@@ -106,10 +109,13 @@ export default {
       var that = this
       if (this.randomsound) {
         this.randomsound = false
-        audio.onended = null
+        audio.onended = function () {
+          that.isPlaying = false
+        }
       } else {
         this.randomsound = true
         audio.onended = function () {
+          that.isPlaying = false
           that.index2 = Math.floor(Math.random() * 12)
         }
       }
