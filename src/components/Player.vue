@@ -19,10 +19,10 @@
       <div class="op" @click="forward">
         <font-awesome-icon :icon="['fas','step-forward']" class="op-item"></font-awesome-icon>
       </div>
-      <div class="op">
+      <div class="op nodo" v-bind:class="{doit: randomsound}" @click="randomPlay">
         <font-awesome-icon :icon="['fas','random']" class="op-item"></font-awesome-icon>
       </div>
-      <div class="op">
+      <div class="op nodo" v-bind:class="{doit: repeatsound}" @click="loopPlay">
         <font-awesome-icon :icon="['fas','retweet']" class="op-item"></font-awesome-icon>
       </div>
       <div class="start">
@@ -70,7 +70,9 @@ export default {
       inter: null,
       isPlaying: true,
       loaded: false,
-      index2: -1 // 子组件不能修改父组件的值 用index2间接传递 用loaded判断是否需要渲染dom 避免由于index2=-1造成的报错
+      index2: -1, // 子组件不能修改父组件的值 用index2间接传递 用loaded判断是否需要渲染dom 避免由于index2=-1造成的报错
+      repeatsound: false,
+      randomsound: false
     }
   },
   watch: {
@@ -98,6 +100,28 @@ export default {
     this.move(d1, d2, d3)
   },
   methods: {
+    randomPlay () {
+      var audio = this.$refs.myplayer
+      var that = this
+      if (this.randomsound) {
+        this.randomsound = false
+        audio.onended = null
+      } else {
+        this.randomsound = true
+        audio.onended = function () {
+          that.index2 = Math.floor(Math.random() * 12)
+        }
+      }
+    },
+    loopPlay () {
+      var audio = this.$refs.myplayer
+      if (this.repeatsound) {
+        this.repeatsound = false
+      } else {
+        this.repeatsound = true
+      }
+      audio.loop = this.repeatsound
+    },
     backward () {
       if (this.index2 > 0) {
         this.index2--
@@ -347,5 +371,11 @@ export default {
   }
   .sound{
     margin-left: 25px;
+  }
+  .nodo{
+    color: #888;
+  }
+  .doit{
+    color: #333333;
   }
 </style>
