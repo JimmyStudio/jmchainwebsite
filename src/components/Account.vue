@@ -32,9 +32,9 @@
           </el-input>
           </el-tooltip>
         </el-form-item>
-        <el-form-item label="Token">
+        <el-form-item label="Coin">
           <el-tooltip class="item" effect="dark" content="转账" placement="right">
-            <el-input v-model="form2.token" disabled>
+            <el-input v-model="form2.coin" disabled>
               <!--<el-tooltip class="item" effect="dark" content="Right Center 提示文字" placement="right">-->
               <el-button slot="append" icon="el-icon-sort"></el-button>
               <!--</el-tooltip>-->
@@ -48,16 +48,14 @@
 
 <script>
 export default {
-  data () {
-    return {
-      form1: {
-        name: '用户13818617241',
-        brief: '测试'
-      },
-      form2: {
-        address: '0x298A7CEd882d922D49B5328397Be60C1FE9d4BDb',
-        token: 1008302
-      }
+  computed: {
+    form1 () {
+      let user = JSON.parse(localStorage.getItem('user_info'))
+      return {name: user.username, brief: user.brief}
+    },
+    form2 () {
+      let user = JSON.parse(localStorage.getItem('user_info'))
+      return {address: user.eth_address, coin: user.coin}
     }
   }
 }
