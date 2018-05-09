@@ -8,7 +8,7 @@
       <div class="content">
         <div class="left-content">
           <el-menu
-            default-active="1"
+            :default-active="active"
             class="el-menu-vertical"
             @select="handleSelect">
             <el-menu-item index="1">
@@ -37,6 +37,27 @@
 
 <script>
 export default {
+  data () {
+    return {
+      active: '1'
+    }
+  },
+  mounted: function () {
+    let rtn = this.$router.currentRoute.name
+    switch (rtn) {
+      case 'Upload':
+        this.active = '3'
+        break
+      case 'Account':
+        this.active = '1'
+        break
+      case 'MyWorks':
+        this.active = '2'
+        break
+      default:
+        break
+    }
+  },
   methods: {
     handleSelect (key, keyPath) {
       if (key === '1') {
