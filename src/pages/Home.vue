@@ -113,10 +113,8 @@ export default {
     work,
     myplayer
   },
-  name: 'home',
   data () {
     return {
-      user: {},
       index: -1,
       car_interval: 3000,
       showPlayer: false,
@@ -124,7 +122,12 @@ export default {
     }
   },
   mounted: function () {
-    this.$http.post(this.domain + '/recommend', {token: ''})
+    let user = localStorage.getItem('user_info')
+    var tk = ''
+    if (user) {
+      tk = JSON.parse(user).token
+    }
+    this.$http.post(this.domain + '/recommend', {token: tk})
       .then((response) => {
         this.works = response.data.list
       })

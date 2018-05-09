@@ -50,11 +50,11 @@
 export default {
   computed: {
     form1 () {
-      let user = JSON.parse(localStorage.getItem('user_info'))
+      let user = this.$store.getters.user
       return {name: user.username, brief: user.brief}
     },
     form2 () {
-      let user = JSON.parse(localStorage.getItem('user_info'))
+      let user = this.$store.getters.user
       return {address: user.eth_address, coin: user.coin}
     }
   }
