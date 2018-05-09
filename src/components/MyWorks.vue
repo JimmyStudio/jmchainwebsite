@@ -11,7 +11,7 @@
       <div class="amount item">已售数量</div>
       <div class="download item">下载</div>
     </div>
-    <workitem v-for="(item , index) in works" :key="index" :work="item" :index="index"></workitem>
+    <workitem v-for="(item , index) in works" :key="index" :work="item" :index="index" v-on:downloadWork="download"></workitem>
   </div>
 </template>
 
@@ -39,6 +39,20 @@ export default {
       .catch(function (response) {
         console.log(response)
       })
+  },
+  methods: {
+    download (index) {
+      let work = this.works[index]
+      let eleLink = document.createElement('a')
+      eleLink.download = work.name
+      eleLink.style.display = 'none'
+      eleLink.href = this.domain + work.local_path
+      // 触发点击
+      document.body.appendChild(eleLink)
+      eleLink.click()
+      // 然后移除
+      document.body.removeChild(eleLink)
+    }
   }
 }
 </script>

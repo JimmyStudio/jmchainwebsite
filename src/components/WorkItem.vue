@@ -16,7 +16,7 @@
     <div class="duration item">{{work.duration}}</div>
     <div class="price item">{{work.price}} Coin</div>
     <div class="amount item">{{work.use_sell_count}}</div>
-    <div class="download item">
+    <div class="download item" @click="downloadWork">
       <el-tooltip class="item" effect="dark" content="下载" placement="right">
         <el-button type="primary" size="mini" icon="el-icon-download"></el-button>
       </el-tooltip>
@@ -33,6 +33,9 @@ export default {
   methods: {
     showDetail (index) {
       console.log(index)
+    },
+    downloadWork () {
+      this.$emit('downloadWork', this.index)
     }
   }
 }
