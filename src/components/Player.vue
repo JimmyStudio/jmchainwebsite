@@ -92,8 +92,15 @@ export default {
         player.play()
         that.moveSlider()
       }
-      player.onended = function () {
-        that.isPlaying = false
+      if (this.randomsound) {
+        player.onended = function () {
+          that.isPlaying = false
+          that.index2 = Math.floor(Math.random() * 12)
+        }
+      } else {
+        player.onended = function () {
+          that.isPlaying = false
+        }
       }
     }
   },
