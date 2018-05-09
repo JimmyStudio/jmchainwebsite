@@ -47,15 +47,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   computed: {
+    ...mapGetters(['user']),
     form1 () {
-      let user = this.$store.getters.user
-      return {name: user.username, brief: user.brief}
+      return {name: this.user.username, brief: this.user.brief}
     },
     form2 () {
-      let user = this.$store.getters.user
-      return {address: user.eth_address, coin: user.coin}
+      return {address: this.user.eth_address, coin: this.user.coin}
     }
   }
 }
