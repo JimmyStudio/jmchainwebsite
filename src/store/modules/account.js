@@ -8,7 +8,7 @@ const getters = {
     if (userinfo) {
       return JSON.parse(userinfo)
     } else {
-      return ''
+      return {token: ''}
     }
   }
 }

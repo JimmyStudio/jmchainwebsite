@@ -107,7 +107,7 @@
 <script>
 import work from '../components/Work.vue'
 import myplayer from '../components/Player.vue'
-
+import { mapGetters } from 'vuex'
 export default {
   components: {
     work,
@@ -121,12 +121,11 @@ export default {
       works: [{}]
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   mounted: function () {
-    let user = localStorage.getItem('user_info')
-    var tk = ''
-    if (user) {
-      tk = JSON.parse(user).token
-    }
+    var tk = this.user.token
     this.$http.post(this.domain + '/recommend', {token: tk})
       .then((response) => {
         this.works = response.data.list

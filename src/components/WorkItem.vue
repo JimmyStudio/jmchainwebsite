@@ -5,17 +5,17 @@
   <div class="work-item">
     <div class="cover item">
       <div class="mask" v-on:click="showDetail"></div>
-      <img :src="work.coverUrl"/>
+      <img :src="this.domain + work.cover_image_path"/>
     </div>
     <div class="desc item">
       <div class="name">{{ work.name }}</div>
       <div class="tags">
-        <el-tag class="tag" size="medium" :key="index" v-for="(item , index) in work.tags">{{item}}</el-tag>
+        <el-tag class="tag" size="medium" :key="index" v-for="(item , index) in work.tags">{{item.name}}</el-tag>
       </div>
     </div>
     <div class="duration item">{{work.duration}}</div>
-    <div class="price item">{{work.price}} Token</div>
-    <div class="amount item">{{work.amount}}</div>
+    <div class="price item">{{work.price}} Coin</div>
+    <div class="amount item">{{work.use_sell_count}}</div>
     <div class="download item">
       <el-tooltip class="item" effect="dark" content="下载" placement="right">
         <el-button type="primary" size="mini" icon="el-icon-download"></el-button>
