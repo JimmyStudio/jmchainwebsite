@@ -62,7 +62,7 @@
 <script>
 import mynav from '../components/Nav.vue'
 // import myplayer from '../components/Player.vue'
-
+import {mapGetters} from 'vuex'
 var checkPhone = (rule, value, callback) => {
   if (!value) {
     return callback(new Error('手机号不能为空'))
@@ -109,7 +109,6 @@ export default {
   data () {
     return {
       hasToken: false,
-      user: {},
       iswhite: true,
       loginForm: {
         phone: '',
@@ -143,11 +142,12 @@ export default {
       dialogCenter: true
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   mounted: function () {
-    let user = localStorage.getItem('user_info')
-    if (user) {
+    if (this.user.token) {
       this.hasToken = true
-      this.user = JSON.parse(user)
     } else {
       this.hasToken = false
     }
@@ -175,6 +175,7 @@ export default {
           if (user.err === '100') {
             localStorage.setItem('user_info', JSON.stringify(user))
             this.loginVisible = false
+            this.$store.state.user = user
             this.user = user
             this.$notify.success({
               title: '成功',
@@ -196,6 +197,7 @@ export default {
           if (res.err === '100') {
             localStorage.clear()
             this.hasToken = false
+            this.$store.state.user = {}
             this.user = {}
           } else {
             this.$message.error(res.message)
