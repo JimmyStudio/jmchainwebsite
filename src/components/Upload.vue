@@ -8,6 +8,7 @@
       <el-form-item label="上传">
         <el-upload
           drag
+          ref="uploadfile"
           action="http://localhost:8888/upload"
           :http-request="uploadFile"
           :limit="form.limit"
@@ -26,6 +27,7 @@
       </el-form-item>
       <el-form-item label="封面">
         <el-upload
+          ref="uploadAvatar"
           class="avatar-uploader"
           action="http://localhost:8888/upload"
           :show-file-list="false"
@@ -53,6 +55,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   data () {
     return {
@@ -62,20 +65,71 @@ export default {
         imageUrl: ''
       },
       checked: true,
-      brief: '测试测试',
+      brief: '',
       name: '',
-      price: 10000,
+      price: 100,
       audioPath: '',
       imageUrl: ''
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   methods: {
     upload () {
-      console.log(this.name)
-      console.log(this.imageUrl)
-      console.log(this.brief)
-      console.log(this.audioPath)
-      console.log(this.price)
+      if (this.audioPath) {
+        let strSpace = '^[^ ]+$'
+        let regSpace = new RegExp(strSpace)
+        if (regSpace.test(this.name)) {
+          if (this.imageUrl) {
+            if (regSpace.test(this.brief)) {
+              if (/^[1-9]\d*$/.test(this.price)) {
+                console.log('验证通过')
+                this.$http.post(this.domain + '/uploadmywork',
+                  {
+                    token: this.user.token,
+                    local_path: this.audioPath,
+                    name: this.name,
+                    brief: this.brief,
+                    cover_image_path: this.imageUrl,
+                    price: this.price
+                  })
+                  .then((response) => {
+                    if (response.data.err === '100') {
+                      this.$refs.uploadfile.clearFiles()
+                      this.$refs.uploadAvatar.clearFiles()
+                      this.audioPath = ''
+                      this.name = ''
+                      this.brief = ''
+                      this.imageUrl = ''
+                      this.price = 100
+                      this.form.imageUrl = ''
+                      this.$notify.success({
+                        title: '成功',
+                        message: '上传作品成功！'
+                      })
+                    } else {
+                      this.$message.error(response.data.message)
+                    }
+                  })
+                  .catch(function (response) {
+                    this.$message.error(response.data)
+                  })
+              } else {
+                this.$message.error('售价需为正整数！')
+              }
+            } else {
+              this.$message.error('简介不能包含空格等特殊字符')
+            }
+          } else {
+            this.$message.error('请上传作品封面')
+          }
+        } else {
+          this.$message.error('作品名称不能包含空格等特殊字符')
+        }
+      } else {
+        this.$message.error('请先上传文件！')
+      }
     },
     uploadFile (content) {
       let formData = new FormData()
@@ -90,8 +144,6 @@ export default {
     },
     handleFileSuccess (res, file) {
       if (res.data.err === '100') {
-        console.log(1)
-        console.log(res.data)
         this.audioPath = res.data.path
         this.$notify.success({
           title: '成功',
@@ -108,12 +160,10 @@ export default {
     },
     removeFile (file, filelist) {
       this.audioPath = ''
-      this.$message('已删除，请重新上传')
+      this.$message('文件已删除，请重新上传')
     },
     handleAvatarSuccess (res, file) {
       if (res.data.err === '100') {
-        console.log(2)
-        console.log(res.data)
         this.form.imageUrl = URL.createObjectURL(file.raw)
         this.imageUrl = res.data.path
         this.$notify.success({
