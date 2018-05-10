@@ -7,32 +7,47 @@
     <el-form class="from" ref="form" :model="form" label-width="80px" label-position="left">
       <el-form-item label="上传">
         <el-upload
-          class="upload-demo"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://localhost:8888/upload"
+          :http-request="uploadFile"
           :limit="form.limit"
-          :file-list="fileList"
-          :multiple="multiple">
+          :multiple="form.multiple"
+          :on-success="handleFileSuccess"
+          :on-remove="removeFile"
+          :before-upload="beforeFileUpload">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip">支持MP3、DTS、DTS-HD、MA、AC3、TrueHD、AAC、HE-AAC、PCM、LPCM、FLAC格式</div>
+          <!--<div class="el-upload__tip" slot="tip">仅限上传单个文件，支持MP3、DTS、DTS-HD、MA、AC3、TrueHD、AAC、HE-AAC、PCM、LPCM、FLAC格式。</div>-->
+          <div class="el-upload__tip" slot="tip">仅限上传单个文件，支持MP3格式。</div>
         </el-upload>
       </el-form-item>
       <el-form-item label="名称">
-        <el-input v-model="form.name" ></el-input>
+        <el-input v-model="name" ></el-input>
+      </el-form-item>
+      <el-form-item label="封面">
+        <el-upload
+          class="avatar-uploader"
+          action="http://localhost:8888/upload"
+          :show-file-list="false"
+          :http-request="uploadFile"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar">
+          <i v-else class="el-icon-plus"></i>
+        </el-upload>
       </el-form-item>
       <el-form-item label="简介">
-        <el-input v-model="form.brief" type="textarea" :rows="3"></el-input>
+        <el-input v-model="brief" type="textarea" :rows="3"></el-input>
       </el-form-item>
       <el-form-item label="售价">
-          <el-input v-model="form.price"><span slot="append">Token</span></el-input>
+          <el-input v-model="price"><span slot="append">Coin</span></el-input>
       </el-form-item>
       <el-form-item label="是否上架">
-        <el-checkbox :checked="form.checked">是</el-checkbox>
+        <el-checkbox :checked="checked">是</el-checkbox>
       </el-form-item>
     </el-form>
     <div class="op">
-      <el-button class="btn" type="primary">上  传</el-button>
+      <el-button class="btn" type="primary" @click="upload">上  传</el-button>
     </div>
   </div>
 </template>
@@ -42,17 +57,82 @@ export default {
   data () {
     return {
       form: {
-        brief: '测试测试',
-        name: '',
-        price: 10000,
         limit: 1,
-        checked: true
+        multiple: false,
+        imageUrl: ''
       },
-      multiple: false,
-      fileList: [{
-        name: 'food.mp3',
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-      }]
+      checked: true,
+      brief: '测试测试',
+      name: '',
+      price: 10000,
+      audioPath: '',
+      imageUrl: ''
+    }
+  },
+  methods: {
+    upload () {
+      console.log(this.name)
+      console.log(this.imageUrl)
+      console.log(this.brief)
+      console.log(this.audioPath)
+      console.log(this.price)
+    },
+    uploadFile (content) {
+      let formData = new FormData()
+      formData.append('upload_file', content.file)
+      this.$http.post(this.domain + '/upload', formData)
+        .then((response) => {
+          content.onSuccess(response)
+        })
+        .catch(function (response) {
+          this.$message.error(response.data)
+        })
+    },
+    handleFileSuccess (res, file) {
+      if (res.data.err === '100') {
+        console.log(1)
+        console.log(res.data)
+        this.audioPath = res.data.path
+        this.$notify.success({
+          title: '成功',
+          message: '上传文件成功！'
+        })
+      }
+    },
+    beforeFileUpload (file) {
+      const isMP3 = file.type === 'audio/mp3'
+      if (!isMP3) {
+        this.$message.error('上传音频文件只能是 mp3 格式!')
+      }
+      return isMP3
+    },
+    removeFile (file, filelist) {
+      this.audioPath = ''
+      this.$message('已删除，请重新上传')
+    },
+    handleAvatarSuccess (res, file) {
+      if (res.data.err === '100') {
+        console.log(2)
+        console.log(res.data)
+        this.form.imageUrl = URL.createObjectURL(file.raw)
+        this.imageUrl = res.data.path
+        this.$notify.success({
+          title: '成功',
+          message: '上传封面成功！'
+        })
+      }
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
     }
   }
 }
@@ -83,5 +163,30 @@ export default {
   }
   .upload{
     width: 100%;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload, .el-icon-plus:hover {
+    border-color: #409EFF;
+  }
+  .el-icon-plus{
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    font-size: 18px;
+    color: #8c939d;
+    width: 78px;
+    height: 78px;
+    line-height: 78px;
+    text-align: center;
+  }
+  .avatar {
+    width: 78px;
+    height: 78px;
+    display: block;
   }
 </style>
