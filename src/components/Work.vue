@@ -32,7 +32,7 @@ export default {
   .cover{
     width: 180px;
     height: 180px;
-    background: red;
+    /*background: red;*/
     position: relative;
   }
   .mask{

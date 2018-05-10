@@ -105,7 +105,7 @@ export default {
   .cover{
     width: 60px;
     height: 60px;
-    background-color: red;
+    /*background-color: red;*/
     margin: 15px;
     position: relative;
   }
