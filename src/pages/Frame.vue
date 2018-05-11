@@ -62,7 +62,7 @@
 <script>
 import mynav from '../components/Nav.vue'
 // import myplayer from '../components/Player.vue'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 var checkPhone = (rule, value, callback) => {
   if (!value) {
     return callback(new Error('手机号不能为空'))
@@ -164,6 +164,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['changeUser']),
     doLogin () {
       this.loginVisible = true
     },
@@ -177,7 +178,7 @@ export default {
           if (user.err === '100') {
             localStorage.setItem('user_info', JSON.stringify(user))
             this.loginVisible = false
-            this.$store.state.user = user
+            this.changeUser(user)
             this.user_ = user
             this.$notify.success({
               title: '成功',
@@ -199,8 +200,9 @@ export default {
           if (res.err === '100') {
             localStorage.clear()
             this.hasToken = false
-            this.$store.state.user = {}
+            this.changeUser({})
             this.user_ = {}
+            this.$router.push({path: ''})
           } else {
             this.$message.error(res.message)
           }

@@ -15,7 +15,19 @@ const getters = {
     }
   }
 }
+const mutations = {
+  changeUser (state, user) {
+    state.user = user
+  }
+}
+
+const actions = {
+  changeUser: ({ commit }, user) => commit('changeUser', user)
+}
+
 export default {
   state,
-  getters
+  getters,
+  mutations,
+  actions
 }
