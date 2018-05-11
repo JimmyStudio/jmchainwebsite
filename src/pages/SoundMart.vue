@@ -46,7 +46,7 @@
 
 <script>
 import saleitem from '../components/SaleItem.vue'
-
+import {mapGetters} from 'vuex'
 export default {
   components: {
     saleitem
@@ -60,8 +60,11 @@ export default {
       works: []
     }
   },
+  computed: {
+    ...mapGetters(['user'])
+  },
   mounted: function () {
-    this.$http.post(this.domain + '/recommend', {token: ''})
+    this.$http.post(this.domain + '/soundmart', {token: this.user.token})
       .then((response) => {
         this.works = response.data.list
       })
