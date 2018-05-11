@@ -5,7 +5,7 @@
   <div>
     <div class="frame">
       <div class="head">
-        <mynav :iswhite="iswhite" :token="hasToken" :user="user" v-on:login="doLogin" v-on:register="doRegister" v-on:logout="doLogout"></mynav>
+        <mynav :iswhite="iswhite" :token="hasToken" :user="user_" v-on:login="doLogin" v-on:register="doRegister" v-on:logout="doLogout"></mynav>
       </div>
       <div class="content">
         <transition name="fade" mode="out-in">
@@ -108,6 +108,7 @@ export default {
   },
   data () {
     return {
+      user_: {},
       hasToken: false,
       iswhite: true,
       loginForm: {
@@ -146,7 +147,8 @@ export default {
     ...mapGetters(['user'])
   },
   mounted: function () {
-    if (this.user.token) {
+    this.user_ = this.user
+    if (this.user_.token) {
       this.hasToken = true
     } else {
       this.hasToken = false
@@ -176,7 +178,7 @@ export default {
             localStorage.setItem('user_info', JSON.stringify(user))
             this.loginVisible = false
             this.$store.state.user = user
-            this.user = user
+            this.user_ = user
             this.$notify.success({
               title: '成功',
               message: '登录成功'
@@ -198,7 +200,7 @@ export default {
             localStorage.clear()
             this.hasToken = false
             this.$store.state.user = {}
-            this.user = {}
+            this.user_ = {}
           } else {
             this.$message.error(res.message)
           }
