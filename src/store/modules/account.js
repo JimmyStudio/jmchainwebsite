@@ -7,11 +7,15 @@ const state = {
 }
 const getters = {
   user: (state, getter) => {
-    let userinfo = localStorage.getItem('user_info')
-    if (userinfo) {
-      return JSON.parse(userinfo)
+    if (state.user.token) {
+      return state.user
     } else {
-      return {token: ''}
+      let userinfo = localStorage.getItem('user_info')
+      if (userinfo) {
+        return JSON.parse(userinfo)
+      } else {
+        return {}
+      }
     }
   }
 }

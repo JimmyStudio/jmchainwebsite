@@ -47,7 +47,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapState } from 'vuex'
+//    user () {
+//      if (this.$store.getters.user.token) {
+//        return this.$store.getters.user
+//      } else {
+//        return this.$store.state.account.user
+//      }
+//    },
+import {mapGetters} from 'vuex'
 export default {
   computed: {
     ...mapGetters(['user']),
