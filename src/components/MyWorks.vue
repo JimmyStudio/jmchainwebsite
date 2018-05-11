@@ -34,7 +34,13 @@ export default {
     let tk = this.user.token
     this.$http.post(this.domain + '/myworks', {token: tk})
       .then((response) => {
-        this.works = response.data.list
+        if (response.data.err === '100') {
+          this.works = response.data.list
+        } else if (response.data.err === '002') {
+          this.$message.error(response.data.message)
+        } else {
+          this.$message.error(response.data)
+        }
       })
       .catch(function (response) {
         console.log(response)
