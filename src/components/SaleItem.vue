@@ -20,8 +20,8 @@
       <font-awesome-icon :icon="['far','heart']"></font-awesome-icon>
     </div>
     <div class="buy item">
-      <el-button>
-        <font-awesome-icon :icon="['fas','shopping-cart']"></font-awesome-icon>  加入购物车
+      <el-button @click="buy">
+        <font-awesome-icon :icon="['fab','ethereum']"></font-awesome-icon>       购 买
       </el-button>
     </div>
   </div>
@@ -36,6 +36,9 @@ export default {
   methods: {
     showDetail (index) {
       console.log(index)
+    },
+    buy () {
+      this.$emit('buy', this.index)
     }
   }
 }
@@ -126,8 +129,11 @@ export default {
     font-weight: 500;
     background-color: white;
   }
+  .like{
+    cursor: pointer;
+  }
   .buy{
-    margin-left: 60px;
+    margin-left: 75px;
     margin-top: 20px;
   }
 </style>

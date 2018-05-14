@@ -55,7 +55,7 @@
 //        return this.$store.state.account.user
 //      }
 //    },
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 export default {
   computed: {
     ...mapGetters(['user']),
@@ -65,6 +65,24 @@ export default {
     form2 () {
       return {address: this.user.eth_address, coin: this.user.coin}
     }
+  },
+  methods: {
+    ...mapActions(['changeUser'])
+  },
+  mounted: function () {
+    let tk = this.user.token
+    this.$http.post(this.domain + '/userinfo', {token: tk})
+      .then((response) => {
+        if (response.data.err === '100') {
+          localStorage.setItem('user_info', JSON.stringify(response.data.user))
+          this.changeUser(response.data.user)
+        } else {
+          this.$message.error(response.data.message)
+        }
+      })
+      .catch(function (response) {
+        console.log(response)
+      })
   }
 }
 </script>

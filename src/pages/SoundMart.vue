@@ -25,7 +25,7 @@
           <div class="buys item">购买</div>
         </div>
         <div class="works">
-          <saleitem v-for="(item , index) in works" :key="index" :work="item" :index="index"></saleitem>
+          <saleitem v-for="(item , index) in works" :key="index" :work="item" :index="index" v-on:buy="buy"></saleitem>
         </div>
         <div class="pags">
           <div class="page-tool">
@@ -73,6 +73,14 @@ export default {
       })
   },
   methods: {
+    buy (index) {
+      let work = this.works[index]
+      if (work.sender_id === this.user.id) {
+        this.$message.error('无法购买您自己发布的作品！')
+      } else {
+        console.log(index)
+      }
+    },
     searchSound () {
       console.log(this.search)
     },

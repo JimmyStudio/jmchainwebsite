@@ -153,6 +153,11 @@ export default {
     } else {
       this.hasToken = false
     }
+    let tos = this.$route.fullPath.split('/')
+    this.iswhite = true
+    if (tos.includes('management')) {
+      this.iswhite = false
+    }
   },
   watch: {
     $route (to, from) {

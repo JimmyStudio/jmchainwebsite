@@ -45,7 +45,7 @@
           <el-input v-model="price"><span slot="append">Coin</span></el-input>
       </el-form-item>
       <el-form-item label="是否上架">
-        <el-checkbox :checked="checked">是</el-checkbox>
+        <el-checkbox v-model="checked">是</el-checkbox>
       </el-form-item>
     </el-form>
     <div class="op">
@@ -85,6 +85,12 @@ export default {
             if (regSpace.test(this.brief)) {
               if (/^[1-9]\d*$/.test(this.price)) {
                 console.log('验证通过')
+                var selltype = 0
+                if (this.checked) {
+                  selltype = 1
+                } else {
+                  selltype = 0
+                }
                 this.$http.post(this.domain + '/uploadmywork',
                   {
                     token: this.user.token,
@@ -92,7 +98,8 @@ export default {
                     name: this.name,
                     brief: this.brief,
                     cover_image_path: this.imageUrl,
-                    price: this.price
+                    price: this.price,
+                    sell_type: selltype
                   })
                   .then((response) => {
                     if (response.data.err === '100') {
