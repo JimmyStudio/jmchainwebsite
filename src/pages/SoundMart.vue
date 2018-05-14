@@ -112,11 +112,11 @@ export default {
               title: '成功',
               message: '购买成功'
             })
+            work.use_sell_count += 1
           } else {
             this.$message.error(response.data.message)
           }
           this.dialogVisible = false
-          work.use_sell_count += 1
         })
         .catch(function (response) {
           console.log(response)
