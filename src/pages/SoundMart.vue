@@ -41,6 +41,26 @@
         </div>
       </div>
     </div>
+    <div class="dialog">
+      <el-dialog
+        title="购买"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :modal="modal"
+        :center="dialogCenter">
+        <div class="eth">
+          <font-awesome-icon :icon="['fab','ethereum']"></font-awesome-icon>
+          <font-awesome-icon class="exc" :icon="['fas','exchange-alt']"></font-awesome-icon>
+          <font-awesome-icon class="wallet" :icon="['far','credit-card']"></font-awesome-icon>
+        </div>
+        <div class="info">
+          您将要支付 <span>{{price}} </span> Coin 用于购买此作品
+        </div>
+      <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="buyit">确 定</el-button>
+      </span>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -57,7 +77,12 @@ export default {
       total: 1000,
       currentPage: 1,
       search: '',
-      works: []
+      works: [{}],
+      dialogVisible: false,
+      dialogCenter: true,
+      modal: false,
+      price: 0,
+      index: 0
     }
   },
   computed: {
@@ -73,12 +98,39 @@ export default {
       })
   },
   methods: {
+    buyit () {
+      let work = this.works[this.index]
+      this.$http.post(this.domain + '/buysound',
+        {token: this.user.token,
+          ipid: work.id,
+          fromuserid: work.sender_id,
+          price: work.price
+        })
+        .then((response) => {
+          if (response.data.err === '100') {
+            this.$notify.success({
+              title: '成功',
+              message: '购买成功'
+            })
+          } else {
+            this.$message.error(response.data.message)
+          }
+          this.dialogVisible = false
+          work.use_sell_count += 1
+        })
+        .catch(function (response) {
+          console.log(response)
+          this.dialogVisible = false
+        })
+    },
     buy (index) {
       let work = this.works[index]
+      this.index = index
       if (work.sender_id === this.user.id) {
         this.$message.error('无法购买您自己发布的作品！')
       } else {
-        console.log(index)
+        this.dialogVisible = true
+        this.price = work.price
       }
     },
     searchSound () {
@@ -185,5 +237,34 @@ export default {
     left: 0;
     background: url(../assets/music.jpg);
     z-index: 2;
+  }
+  .dialog{
+    position: absolute;
+    z-index: 100;
+  }
+  .eth{
+    position: relative;
+    text-align: center;
+    font-size: 100px;
+    line-height: 150px;
+    color: #ff5622;
+  }
+  .exc{
+    line-height: 150px;
+    font-size: 30px;
+    margin-bottom: 30px;
+  }
+  .wallet{
+    line-height: 150px;
+    font-size: 80px;
+    margin-bottom: 10px;
+  }
+  .info{
+    text-align: center;
+    margin-top: 40px;
+  }
+  .info span{
+    color: #ff5622;
+    font-size: 20px;
   }
 </style>

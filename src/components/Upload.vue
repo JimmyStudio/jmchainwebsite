@@ -49,7 +49,7 @@
       </el-form-item>
     </el-form>
     <div class="op">
-      <el-button class="btn" type="primary" @click="upload">上  传</el-button>
+      <el-button class="btn" type="primary" @click="upload">发  布</el-button>
     </div>
   </div>
 </template>
@@ -113,7 +113,7 @@ export default {
                       this.form.imageUrl = ''
                       this.$notify.success({
                         title: '成功',
-                        message: '上传作品成功！'
+                        message: '发布作品成功！获得奖励 ' + response.data.award + ' Coin！'
                       })
                     } else {
                       this.$message.error(response.data.message)
