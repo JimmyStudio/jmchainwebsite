@@ -25,7 +25,7 @@
           <div class="buys item">购买</div>
         </div>
         <div class="works">
-          <saleitem v-for="(item , index) in works" :key="index" :work="item" :index="index" v-on:buy="buy"></saleitem>
+          <saleitem v-for="(item , index) in works" :key="index" :work="item" :index="index" v-on:buy="buy" v-on:like="like"></saleitem>
         </div>
         <div class="pags">
           <div class="page-tool">
@@ -98,6 +98,24 @@ export default {
       })
   },
   methods: {
+    like (index) {
+      let work = this.works[index]
+      this.$http.post(this.domain + '/like',
+        {token: this.user.token,
+          ipid: work.id
+        })
+        .then((response) => {
+          if (response.data.err === '100') {
+            this.$message.success(response.data.message)
+            work.like = !work.like
+          } else {
+            this.$message.error(response.data.message)
+          }
+        })
+        .catch(function (response) {
+          console.log(response)
+        })
+    },
     buyit () {
       let work = this.works[this.index]
       this.$http.post(this.domain + '/buysound',

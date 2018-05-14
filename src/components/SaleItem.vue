@@ -16,8 +16,13 @@
     <div class="duration item">{{work.duration}}</div>
     <div class="price item">{{work.price}} Coin</div>
     <div class="amount item">{{work.use_sell_count}}</div>
-    <div class="like item">
-      <font-awesome-icon :icon="['far','heart']"></font-awesome-icon>
+    <div class="like item" @click="like">
+      <div v-if="work.like">
+        <font-awesome-icon class="liked" :icon="['fas','heart']"></font-awesome-icon>
+      </div>
+      <div v-else>
+        <font-awesome-icon :icon="['far','heart']"></font-awesome-icon>
+      </div>
     </div>
     <div class="buy item">
       <el-button @click="buy">
@@ -37,6 +42,9 @@ export default {
     showDetail (index) {
       console.log(index)
     },
+    like () {
+      this.$emit('like', this.index)
+    },
     buy () {
       this.$emit('buy', this.index)
     }
@@ -45,6 +53,9 @@ export default {
 </script>
 
 <style scoped>
+  .liked{
+    color: #ff5622;
+  }
   .cover img{
     width: 100%;
     height: 100%;
