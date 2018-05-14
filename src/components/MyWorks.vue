@@ -3,15 +3,38 @@
  */
 <template>
   <div class="works">
-    <div class="title">我的作品</div>
-    <div class="titles">
-      <div class="name item">作品</div>
-      <div class="duration item">时长</div>
-      <div class="price item">售价</div>
-      <div class="amount item">已售数量</div>
-      <div class="download item">下载</div>
+    <div class="title">我发布的作品</div>
+    <div v-if="works[0]">
+      <div class="titles">
+        <div class="name item">作品</div>
+        <div class="duration item">时长</div>
+        <div class="price item">售价</div>
+        <div class="amount item">已售数量</div>
+        <div class="download item">下载</div>
+      </div>
+      <workitem v-for="(item , index) in works" :key="index" :work="item" :index="index" v-on:downloadWork="download"></workitem>
     </div>
-    <workitem v-for="(item , index) in works" :key="index" :work="item" :index="index" v-on:downloadWork="download"></workitem>
+    <div v-else="">
+      <div class="empty">
+        您尚未发布任何作品
+      </div>
+    </div>
+    <div class="title">我购买的作品</div>
+    <div v-if="buylist[0]">
+      <div class="titles">
+        <div class="name item">作品</div>
+        <div class="duration item">时长</div>
+        <div class="price item">售价</div>
+        <div class="amount item">已售数量</div>
+        <div class="download item">下载</div>
+      </div>
+      <workitem v-for="(item , index) in buylist" :key="index" :work="item" :index="index" v-on:downloadWork="download"></workitem>
+    </div>
+    <div v-else>
+      <div class="empty">
+        您尚未购买任何作品
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,7 +47,8 @@ export default {
   },
   data () {
     return {
-      works: [{}]
+      works: [{}],
+      buylist: [{}]
     }
   },
   computed: {
@@ -35,7 +59,8 @@ export default {
     this.$http.post(this.domain + '/myworks', {token: tk})
       .then((response) => {
         if (response.data.err === '100') {
-          this.works = response.data.list
+          this.works = response.data.sendlist
+          this.buylist = response.data.buylist
         } else if (response.data.err === '002') {
           this.$message.error(response.data.message)
         } else {
@@ -101,5 +126,10 @@ export default {
     width: 100%;
     /*height: 200px;*/
     /*background: red;*/
+  }
+  .empty{
+    padding: 10px 0 20px 0;
+    text-align: center;
+    color: #5e5e5e;
   }
 </style>
