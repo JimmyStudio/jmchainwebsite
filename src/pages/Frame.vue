@@ -17,24 +17,24 @@
         :visible.sync="registerVisible"
         width="30%"
         :center="dialogCenter">
-        <el-form :model="registerForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
+        <el-form :model="registerForm" status-icon :rules="rules" ref="registerForm" label-width="100px" class="demo-ruleForm" label-position="left">
           <el-form-item label="手机号" prop="phone">
             <el-input v-model.number="registerForm.phone"></el-input>
           </el-form-item>
-          <el-form-item label="验证码" prop="pass">
-            <el-input type="password" v-model="registerForm.pass" auto-complete="off">
-              <el-button slot="append" type="primary">发送验证码</el-button>
-            </el-input>
-          </el-form-item>
+          <!--<el-form-item label="验证码" prop="pass">-->
+            <!--<el-input type="password" v-model="registerForm.pass" auto-complete="off">-->
+              <!--<el-button slot="append" type="primary">发送验证码</el-button>-->
+            <!--</el-input>-->
+          <!--</el-form-item>-->
           <el-form-item label="密码" prop="pw">
-            <el-input v-model.number="registerForm.pw"></el-input>
+            <el-input type="password" v-model.number="registerForm.pw"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="pwa">
-            <el-input v-model.number="registerForm.pwa"></el-input>
+            <el-input type="password" v-model.number="registerForm.pwa"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">注 册</el-button>
+          <el-button type="primary" @click="goregister">注 册</el-button>
           </span>
       </el-dialog>
       <el-dialog
@@ -42,7 +42,7 @@
         :visible.sync="loginVisible"
         width="30%"
         :center="dialogCenter">
-        <el-form :model="loginForm" status-icon :rules="rules" ref="ruleForm2" label-width="100px" class="demo-ruleForm" label-position="left">
+        <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm" label-position="left">
           <el-form-item label="手机号" prop="phone">
             <el-input v-model.number="loginForm.phone"></el-input>
           </el-form-item>
@@ -61,52 +61,48 @@
 
 <script>
 import mynav from '../components/Nav.vue'
-// import myplayer from '../components/Player.vue'
 import {mapGetters, mapActions} from 'vuex'
-var checkPhone = (rule, value, callback) => {
-  if (!value) {
-    return callback(new Error('手机号不能为空'))
-  }
-  setTimeout(() => {
-    if (!Number.isInteger(value)) {
-      callback(new Error('请输入正确的手机号'))
-    }
-  }, 1000)
-}
-var validatePass = (rule, value, callback) => {
-  if (value === '') {
-    return callback(new Error('请输入验证码'))
-  }
-}
-var validatePass3 = (rule, value, callback) => {
-  if (value === '') {
-    return callback(new Error('请输入密码'))
-  }
-}
-var validatePass1 = (rule, value, callback) => {
-  if (value === '') {
-    callback(new Error('请输入密码'))
-  } else {
-    if (this.rules.pwa !== '') {
-      this.$refs.rules.validateField('pwa')
-    }
-    callback()
-  }
-}
-var validatePass2 = (rule, value, callback) => {
-  if (value === '') {
-    callback(new Error('请再次输入密码'))
-  } else if (value !== this.ruleForm2.pass) {
-    callback(new Error('两次输入密码不一致!'))
-  } else {
-    callback()
-  }
-}
+
 export default {
   components: {
     mynav
   },
   data () {
+    var checkPhone = (rule, value, callback) => {
+      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/
+      if (!myreg.test(value)) {
+        return callback(new Error('请输入正确的手机号'))
+      }
+      setTimeout(() => {
+        if (!myreg.test(value)) {
+          callback(new Error('请输入正确的手机号'))
+        } else {
+          callback()
+        }
+      }, 1000)
+    }
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      }
+      setTimeout(() => {
+        if (value === '') {
+          callback(new Error('请输入密码'))
+        } else {
+          callback()
+        }
+      }, 1000)
+    }
+    var validatePwa = (rule, value, callback) => {
+      console.log(this.registerForm.pw)
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.registerForm.pw) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       user_: {},
       hasToken: false,
@@ -117,25 +113,21 @@ export default {
       },
       registerForm: {
         phone: '',
-        pass: '',
         pw: '',
         pwa: ''
       },
       rules: {
         passv: [
-          { validator: validatePass3, trigger: 'blur' }
+          { validator: validatePass, trigger: 'blur' }
         ],
         phone: [
           { validator: checkPhone, trigger: 'blur' }
         ],
-        pass: [
+        pw: [
           { validator: validatePass, trigger: 'blur' }
         ],
-        pw: [
-          { validator: validatePass1, trigger: 'blur' }
-        ],
         pwa: [
-          { validator: validatePass2, trigger: 'blur' }
+          { validator: validatePwa, trigger: 'blur' }
         ]
       },
       registerVisible: false,
@@ -175,6 +167,9 @@ export default {
     },
     doRegister () {
       this.registerVisible = true
+    },
+    goregister () {
+      this.registerVisible = false
     },
     goLogin () {
       this.$http.post(this.domain + '/login', {phone: this.loginForm.phone, password: this.loginForm.passv})
