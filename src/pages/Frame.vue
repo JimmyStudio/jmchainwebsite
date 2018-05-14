@@ -94,7 +94,6 @@ export default {
       }, 1000)
     }
     var validatePwa = (rule, value, callback) => {
-      console.log(this.registerForm.pw)
       if (value === '') {
         callback(new Error('请再次输入密码'))
       } else if (value !== this.registerForm.pw) {
@@ -170,6 +169,43 @@ export default {
     },
     goregister () {
       this.registerVisible = false
+      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/
+      if (!myreg.test(this.registerForm.phone)) {
+        this.$message.error('请输入正确的手机号码')
+      } else {
+        if (this.registerForm.pw !== '') {
+          if (this.registerForm.pwa !== '') {
+            if (this.registerForm.pw === this.registerForm.pwa) {
+              this.$http.post(this.domain + '/register', {phone: this.registerForm.phone, password: this.registerForm.pw})
+                .then((response) => {
+                  let res = response.data
+                  if (res.err === '100') {
+                    localStorage.setItem('user_info', JSON.stringify(res.user))
+                    this.loginVisible = false
+                    this.changeUser(res.user)
+                    this.user_ = res.user
+                    this.$notify.success({
+                      title: '成功',
+                      message: '注册成功'
+                    })
+                    this.hasToken = true
+                  } else {
+                    this.$message.error(res.message)
+                  }
+                })
+                .catch(function (response) {
+                  console.log(response)
+                })
+            } else {
+              this.$message.error('两次输入密码不一致!')
+            }
+          } else {
+            this.$message.error('请确认密码')
+          }
+        } else {
+          this.$message.error('请输入密码')
+        }
+      }
     },
     goLogin () {
       this.$http.post(this.domain + '/login', {phone: this.loginForm.phone, password: this.loginForm.passv})
