@@ -57,7 +57,7 @@
           您将要支付 <span>{{price}} </span> Coin 用于购买此作品
         </div>
       <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="buyit">确 定</el-button>
+          <el-button type="primary" @click="buyit" :loading="loading">确 定</el-button>
       </span>
       </el-dialog>
     </div>
@@ -82,7 +82,8 @@ export default {
       dialogCenter: true,
       modal: false,
       price: 0,
-      index: 0
+      index: 0,
+      loading: false
     }
   },
   computed: {
@@ -117,6 +118,7 @@ export default {
         })
     },
     buyit () {
+      this.loading = true
       let work = this.works[this.index]
       this.$http.post(this.domain + '/buysound',
         {token: this.user.token,
@@ -135,10 +137,12 @@ export default {
             this.$message.error(response.data.message)
           }
           this.dialogVisible = false
+          this.loading = false
         })
         .catch(function (response) {
           console.log(response)
           this.dialogVisible = false
+          this.loading = false
         })
     },
     buy (index) {
