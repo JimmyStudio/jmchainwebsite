@@ -49,7 +49,7 @@
       </el-form-item>
     </el-form>
     <div class="op">
-      <el-button class="btn" type="primary" @click="upload">发  布</el-button>
+      <el-button class="btn" type="primary" @click="upload" :loading="loading">发  布</el-button>
     </div>
   </div>
 </template>
@@ -69,7 +69,8 @@ export default {
       name: '',
       price: 100,
       audioPath: '',
-      imageUrl: ''
+      imageUrl: '',
+      loading: false
     }
   },
   computed: {
@@ -77,6 +78,7 @@ export default {
   },
   methods: {
     upload () {
+      this.loading = true
       if (this.audioPath) {
         let strSpace = '^[^ ]+$'
         let regSpace = new RegExp(strSpace)
@@ -115,27 +117,35 @@ export default {
                         title: '成功',
                         message: '发布作品成功！获得奖励 ' + response.data.award + ' Coin！'
                       })
+                      this.loading = false
                     } else {
                       this.$message.error(response.data.message)
+                      this.loading = false
                     }
                   })
                   .catch(function (response) {
                     this.$message.error(response.data)
+                    this.loading = false
                   })
               } else {
                 this.$message.error('售价需为正整数！')
+                this.loading = false
               }
             } else {
               this.$message.error('简介不能包含空格等特殊字符')
+              this.loading = false
             }
           } else {
             this.$message.error('请上传作品封面')
+            this.loading = false
           }
         } else {
           this.$message.error('作品名称不能包含空格等特殊字符')
+          this.loading = false
         }
       } else {
         this.$message.error('请先上传文件！')
+        this.loading = false
       }
     },
     uploadFile (content) {
