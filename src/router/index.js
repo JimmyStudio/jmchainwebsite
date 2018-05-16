@@ -7,6 +7,7 @@ import MyWorks from '@/components/MyWorks'
 import Upload from '@/components/Upload'
 import SoundMart from '@/pages/SoundMart'
 import Frame from '@/pages/Frame'
+import Chain from '@/pages/Chain'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
           path: 'sounds',
           name: 'SoundMart',
           component: SoundMart
+        },
+        {
+          path: 'chain',
+          name: 'Chain',
+          component: Chain
         }
       ]
 

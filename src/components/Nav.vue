@@ -7,6 +7,7 @@
     <div class="logo small">Beta</div>
     <div class="left" @click="openHome">首页</div>
     <div class="left" @click="openSounds">音效库</div>
+    <div class="left" @click="openChain">文娱链</div>
     <div v-if="token">
       <div class="op">
         <el-badge :value="200" :max="99" class="item">
@@ -28,7 +29,7 @@
     </div>
     <div v-else>
       <div class="op">
-        <div class="btn login" @click="login">登录</div>
+        <div class="btn login" v-bind:class="{darktext: !iswhite}" @click="login">登录</div>
         <div class="btn register" @click="register">注册</div>
       </div>
     </div>
@@ -48,6 +49,9 @@ export default {
     },
     openSounds () {
       this.$router.push('/sounds')
+    },
+    openChain () {
+      this.$router.push('/chain')
     },
     login () {
       this.$emit('login')
@@ -78,6 +82,7 @@ export default {
     color: #5e5e5e;
     margin: 0 auto;
     background-color: white;
+    font-weight: 500;
   }
   .whitetext{
     color: white;
@@ -158,11 +163,14 @@ export default {
     height: 28px;
   }
   .login:hover{
-    border-color: white;
+    border-color: #5e5e5e;
     cursor: pointer;
   }
   .register:hover{
-    background-color: #ff6000;
+    background-color: #ff7000;
     cursor: pointer;
+  }
+  .darktext{
+    color: #5e5e5e;
   }
 </style>

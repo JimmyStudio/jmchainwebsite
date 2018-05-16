@@ -144,23 +144,22 @@ export default {
     } else {
       this.hasToken = false
     }
-    let tos = this.$route.fullPath.split('/')
-    this.iswhite = true
-    if (tos.includes('management')) {
-      this.iswhite = false
-    }
+    this.checkRoute(this.$route)
   },
   watch: {
     $route (to, from) {
-      let tos = to.fullPath.split('/')
-      this.iswhite = true
-      if (tos.includes('management')) {
-        this.iswhite = false
-      }
+      this.checkRoute(to)
     }
   },
   methods: {
     ...mapActions(['changeUser']),
+    checkRoute (to) {
+      let tos = to.fullPath.split('/')
+      this.iswhite = true
+      if (tos.includes('management') || tos.includes('chain')) {
+        this.iswhite = false
+      }
+    },
     doLogin () {
       this.loginVisible = true
     },
