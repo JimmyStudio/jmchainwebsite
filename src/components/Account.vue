@@ -32,7 +32,7 @@
           </el-input>
           </el-tooltip>
         </el-form-item>
-        <el-form-item label="Coin">
+        <el-form-item label="JMT">
           <el-tooltip class="item" effect="dark" content="转账" placement="right">
             <el-input v-model="form2.coin" disabled>
               <!--<el-tooltip class="item" effect="dark" content="Right Center 提示文字" placement="right">-->

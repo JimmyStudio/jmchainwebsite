@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="duration item">{{work.duration}}</div>
-    <div class="price item">{{work.price}} Coin</div>
+    <div class="price item">{{work.price}} JMT</div>
     <div class="amount item">{{work.use_sell_count}}</div>
     <div class="like item" @click="like">
       <div v-if="work.like">

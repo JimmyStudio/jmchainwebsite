@@ -54,7 +54,7 @@
           <font-awesome-icon class="wallet" :icon="['far','credit-card']"></font-awesome-icon>
         </div>
         <div class="info">
-          您将要支付 <span>{{price}} </span> Coin 用于购买此作品
+          您将要支付 <span>{{price}} </span> JMT 用于购买此作品
         </div>
       <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="buyit" :loading="loading">确 定</el-button>

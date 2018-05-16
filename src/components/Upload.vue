@@ -42,7 +42,7 @@
         <el-input v-model="brief" type="textarea" :rows="3"></el-input>
       </el-form-item>
       <el-form-item label="售价">
-          <el-input v-model="price"><span slot="append">Coin</span></el-input>
+          <el-input v-model="price"><span slot="append">JMT</span></el-input>
       </el-form-item>
       <el-form-item label="是否上架">
         <el-checkbox v-model="checked">是</el-checkbox>
@@ -115,7 +115,7 @@ export default {
                       this.form.imageUrl = ''
                       this.$notify.success({
                         title: '成功',
-                        message: '发布作品成功！获得奖励 ' + response.data.award + ' Coin！'
+                        message: '发布作品成功！获得奖励 ' + response.data.award + ' JMT！'
                       })
                       this.loading = false
                     } else {
