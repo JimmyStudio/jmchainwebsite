@@ -37,8 +37,10 @@
       </div>
       <div class="recommend">
         <div class="rec-title"> —— 热门推荐 —— </div>
-        <div class="rec-content">
-          <work class="rec-work" v-for="(item,index) in works" :key="index" :index="index" :work="item" v-on:showDetail="showWorkDetail"></work>
+        <div class="rec-content-wrap">
+          <div class="rec-content">
+            <work class="rec-work" v-for="(item,index) in works" :key="index" :index="index" :work="item" v-on:showDetail="showWorkDetail"></work>
+          </div>
         </div>
         <div class="explore">
           <div class="more" @click="openSounds">发现更多</div>
@@ -94,9 +96,9 @@
           </div>
         </div>
       </div>
-      <div class="copyright">
-        © 2018 劲米科技
-      </div>
+    </div>
+    <div class="copyright">
+      © 2018 劲米科技
     </div>
     <div class="player-content" v-show="showPlayer">
       <myplayer :index="index" :works="works"></myplayer>
@@ -289,14 +291,22 @@ export default {
     height: 50px;
     line-height: 50px;
   }
+  .rec-content-wrap{
+    width: 1212px;
+    margin: 0 auto;
+  }
   .rec-content{
-    padding: 10px;
-    display: flex;
+    /*padding: 10px;*/
+    width: 1212px;
+    display: -webkit-box;   /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;  /* OLD - Firefox 19- H5不用考虑 */
+    display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
     flex-wrap: wrap;
     justify-content: space-around;
   }
   .rec-work{
     flex: 0 0 auto;
+    /*margin: 0 5px;*/
   }
   .explore{
     width: 100%;
@@ -317,27 +327,27 @@ export default {
     cursor: pointer;
   }
   .bot-line{
-    width: 1140px;
+    /*width: 1140px;*/
     height: 1px;
     background-color: #f2f2f2;
     margin: 0 auto;
   }
   .bottom{
-    width: 100%;
+    /*width: 100%;*/
     /*height: 250px;*/
     margin: 0 auto;
     background-color: white;
     display: flex;
     color: #5e5e5e;
-    padding-top: 40px;
+    /*padding-top: 40px;*/
   }
   .bot-item{
     flex: 0 0 auto;
     width: 580px;
-    padding: 0 20px 0 20px;
+    padding: 20px 20px 0 20px;
   }
   .bot-left{
-    /*background-color: red;*/
+    /*background-color: yellow;*/
   }
   .bot-right{
     display: flex;
@@ -348,6 +358,7 @@ export default {
     height: 40px;
     font-size: 14px;
     line-height: 40px;
+    /*background-color: red;*/
   }
   .left-item:hover{
     cursor: pointer;
@@ -363,12 +374,12 @@ export default {
   }
   .right-item{
     flex: 0 0 auto;
-    width: 160px;
+    /*width: 160px;*/
     /*background: red;*/
   }
   .copyright{
     /*margin: 0 auto;*/
-    width: 100%;
+    /*width: 100%;*/
     height: 20px;
     /*background-color: #5e5e5e;*/
     color: #5e5e5e;
