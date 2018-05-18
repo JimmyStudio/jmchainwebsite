@@ -8,6 +8,8 @@ import Upload from '@/components/Upload'
 import SoundMart from '@/pages/SoundMart'
 import Frame from '@/pages/Frame'
 import Chain from '@/pages/Chain'
+import ChainList from '@/components/ChainList'
+import BlockDetail from '@/components/BlockDetail'
 
 Vue.use(Router)
 
@@ -52,8 +54,19 @@ export default new Router({
         },
         {
           path: 'chain',
-          name: 'Chain',
-          component: Chain
+          component: Chain,
+          children: [
+            {
+              path: '',
+              name: 'ChainList',
+              component: ChainList
+            },
+            {
+              path: ':hash',
+              name: 'BlockDetail',
+              component: BlockDetail
+            }
+          ]
         }
       ]
 

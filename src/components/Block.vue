@@ -2,11 +2,15 @@
  * Created by Jimmy on 2018/5/17.
  */
 <template>
-  <div class="block">
+  <div class="block" @click="openDetail">
     <div class="b-item b-item-1">{{block.number}}</div>
     <div class="b-item b-item-2">{{block.timestamp}}</div>
-    <div class="b-item b-item-3">{{block.hash}}</div>
-    <div class="b-item b-item-4">{{block.transactions.length}}</div>
+    <div v-if="block.hash">
+      <div class="b-item b-item-3">{{block.hash.toUpperCase()}}</div>
+    </div>
+    <div v-if="block.transactions">
+      <div class="b-item b-item-4">{{block.transactions.length}}</div>
+    </div>
   </div>
 </template>
 
@@ -15,6 +19,11 @@ export default {
   props: {
     index: Number,
     block: Object
+  },
+  methods: {
+    openDetail () {
+      this.$emit('openDetail', this.index)
+    }
   }
 }
 </script>
@@ -26,7 +35,7 @@ export default {
     margin: 10px 0;
     /*border: 1px solid #5e5e5e;*/
     /*background-color: #22252f;*/
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     line-height: 60px;
     color: #5e5e5e;
@@ -44,6 +53,7 @@ export default {
   }
   .b-item-3{
     width: 550px;
+    text-align: left;
   }
   .b-item-1{
     /*color: #57a3fb;*/
